@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Repositories;
+namespace Republicas\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\RepublicaAccountRepository;
-use App\Models\RepublicaAccount;
-use App\Validators\RepublicaAccountValidator;;
+use Republicas\Models\RepublicaAccount;
 
 /**
  * Class RepublicaAccountRepositoryEloquent
- * @package namespace App\Repositories;
+ * @package namespace Republicas\Repositories;
  */
 class RepublicaAccountRepositoryEloquent extends BaseRepository implements RepublicaAccountRepository
 {

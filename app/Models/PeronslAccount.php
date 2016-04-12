@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace Republicas\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class PersonalAccount extends Model implements Transformable
+class PeronslAccount extends Model implements Transformable
 {
     use TransformableTrait;
 

@@ -5,10 +5,10 @@ namespace Republicas\Repositories;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface RepublicaRepository
+ * Interface PeronslAccountRepository
  * @package namespace Republicas\Repositories;
  */
-interface RepublicaRepository extends RepositoryInterface
+interface PeronslAccountRepository extends RepositoryInterface
 {
     //
 }

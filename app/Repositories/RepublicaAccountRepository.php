@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories;
+namespace Republicas\Repositories;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Interface RepublicaAccountRepository
- * @package namespace App\Repositories;
+ * @package namespace Republicas\Repositories;
  */
 interface RepublicaAccountRepository extends RepositoryInterface
 {

@@ -148,6 +148,7 @@ return [
         Republicas\Providers\AuthServiceProvider::class,
         Republicas\Providers\EventServiceProvider::class,
         Republicas\Providers\RouteServiceProvider::class,
+        //Republicas\Providers\RepositoryServiceProvider::class,
 
     ],
 

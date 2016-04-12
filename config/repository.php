@@ -218,9 +218,9 @@ return [
     |
     */
     'generator'  => [
-        'basePath'      => app_path(),
-        'rootNamespace' => 'App\\',
-        'paths'         => [
+        'basePath'         => app_path(),
+        'rootNamespace'    => 'Republicas\\',
+        'paths'            => [
             'models'       => 'Models',
             'repositories' => 'Repositories',
             'interfaces'   => 'Repositories',

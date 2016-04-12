@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Repositories;
+namespace Republicas\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\PersonalAccountRepository;
-use App\Models\PersonalAccount;
-use App\Validators\PersonalAccountValidator;;
+use Republicas\Models\PeronslAccount;
+
 
 /**
- * Class PersonalAccountRepositoryEloquent
- * @package namespace App\Repositories;
+ * Class PeronslAccountRepositoryEloquent
+ * @package namespace Republicas\Repositories;
  */
-class PersonalAccountRepositoryEloquent extends BaseRepository implements PersonalAccountRepository
+class PeronslAccountRepositoryEloquent extends BaseRepository implements PeronslAccountRepository
 {
     /**
      * Specify Model class name
@@ -21,7 +20,7 @@ class PersonalAccountRepositoryEloquent extends BaseRepository implements Person
      */
     public function model()
     {
-        return PersonalAccount::class;
+        return PeronslAccount::class;
     }
 
     

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePersonalaccountsTable extends Migration
+class CreatePeronslaccountsTable extends Migration
 {
 
 	/**
@@ -13,7 +13,7 @@ class CreatePersonalaccountsTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('personalaccounts', function(Blueprint $table) {
+		Schema::create('peronslaccounts', function(Blueprint $table) {
             $table->increments('id');
 
             $table->timestamps();
@@ -27,7 +27,7 @@ class CreatePersonalaccountsTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('personalaccounts');
+		Schema::drop('peronslaccounts');
 	}
 
 }

@@ -23,6 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        App::bind('App\Repositories\RepublicaRepository',
+            'App\Repositories\RepublicaRepositoryEloquent');
+
+        App::bind('App\Repositories\RepublicaAccountRepository',
+            'App\Repositories\RepublicaAccountRepositoryEloquent');
+
+        App::bind('App\Repositories\PersonalAccountRepository',
+            'App\Repositories\PersonalAccountRepositoryEloquent');
     }
 }

@@ -30,9 +30,27 @@ return [
     ],
 
     'stripe' => [
-        'model'  => Republicas\User::class,
+        'model'  => Republicas\Models\User::class,
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+    ],
+
+    'facebook' => [
+        'client_id' => '1333745943307642',
+        'client_secret' => 'f26b5fd24534153c3c182782df9777fb',
+        'redirect' => 'http://dev.republicas.com/social/login/facebook/callback',
+    ],
+
+    'github' => [
+        'client_id' => 'f706c6c03c319e2f77ad',
+        'client_secret' => 'eb32c1e4e1b04ffc01aca05c2560015dcaab44f8',
+        'redirect' => 'http://dev.republicas.com/social/login/github/callback',
+    ],
+
+    'twitter' => [
+        'client_id' => 'a0xJ56y5mP9E9RCbvjFht3SrF',
+        'client_secret' => 'MIkKfmOTpwhFXwKufdDuU1EoQfIgZebDJsrUGclJ9NQ1x36hHp',
+        'redirect' => 'http://dev.republicas.com/social/login/twitter/callback',
     ],
 
 ];

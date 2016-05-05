@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => Republicas\User::class,
+    'model' => Republicas\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

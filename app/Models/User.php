@@ -1,6 +1,6 @@
 <?php
 
-namespace Republicas;
+namespace Republicas\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +28,12 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = [
+        'name',
+        'email',
+        'telephone',
+        'password',
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,4 +41,17 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /*
+     * Relationships
+     */
+    public function republic()
+    {
+        return $this->hasOne(Republic::class);
+    }
+
+    public function republics()
+    {
+        return $this->belongsToMany(Republic::class);
+    }
 }

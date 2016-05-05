@@ -36,21 +36,21 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '1333745943307642',
-        'client_secret' => 'f26b5fd24534153c3c182782df9777fb',
-        'redirect' => 'http://dev.republicas.com/social/login/facebook/callback',
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT'),
     ],
 
     'github' => [
-        'client_id' => 'f706c6c03c319e2f77ad',
-        'client_secret' => 'eb32c1e4e1b04ffc01aca05c2560015dcaab44f8',
-        'redirect' => 'http://dev.republicas.com/social/login/github/callback',
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => env('GITHUB_REDIRECT'),
     ],
 
     'twitter' => [
-        'client_id' => 'a0xJ56y5mP9E9RCbvjFht3SrF',
-        'client_secret' => 'MIkKfmOTpwhFXwKufdDuU1EoQfIgZebDJsrUGclJ9NQ1x36hHp',
-        'redirect' => 'http://dev.republicas.com/social/login/twitter/callback',
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect' => env('TWITTER_REDIRECT'),
     ],
 
 ];

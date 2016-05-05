@@ -2,17 +2,20 @@
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li>
-                <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                <a href=""><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-home"></i> República
+                    <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="flot.html">Flot Charts</a>
+                        <a href="{{ route('rep_create') }}">Cadastrar</a>
                     </li>
+                    @if(isset(Auth::user()->republic))
                     <li>
-                        <a href="morris.html">Morris.js Charts</a>
+                        <a href="{{ route('rep_edit', Auth::user()->republic->id) }}">Editar</a>
                     </li>
+                    @endif
                 </ul>
                 <!-- /.nav-second-level -->
             </li>

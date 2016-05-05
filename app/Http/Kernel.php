@@ -26,8 +26,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Republicas\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \Republicas\Http\Middleware\RedirectIfAuthenticated::class,
+        'auth'          => \Republicas\Http\Middleware\Authenticate::class,
+        'auth.basic'    => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest'         => \Republicas\Http\Middleware\RedirectIfAuthenticated::class,
+        //'auth0.jwt'     => \Auth0\Login\Middleware\Auth0JWTMiddleware::class,
     ];
 }

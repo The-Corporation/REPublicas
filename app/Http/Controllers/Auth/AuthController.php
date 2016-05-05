@@ -2,35 +2,57 @@
 
 namespace Republicas\Http\Controllers\Auth;
 
-use Republicas\User;
-use Validator;
-use Republicas\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+use Republicas\Models\User;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins, ValidatesRequests;
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    protected $redirectPath = '/';
 
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->redirectPath = route('home');
+        $this->middleware('guest', ['except' => ['logout', 'getLogout']]);
+    }
+
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback($provider)
+    {
+        $user = Socialite::driver($provider )->user();
+        //dd($user);
+        // storing data to our user table and logging them in
+        $data = [
+            'name' => $user->getName(),
+            'email' => $user->getEmail()
+        ];
+
+        Auth::login(User::firstOrCreate($data));
+
+        //after login redirecting to home page
+        return redirect($this->redirectPath());
     }
 
     /**
@@ -43,7 +65,7 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -57,8 +79,8 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
             'email' => $data['email'],
+            'name' => $data['name'],
             'password' => bcrypt($data['password']),
         ]);
     }

@@ -26,12 +26,33 @@ Route::get('/', function() {
     return redirect()->route('home');
 });
 
-Route::group(['prefix' => 'admin/republicas/', 'middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function() {
 
-    Route::get('', ['as' => 'home', 'uses' => 'RepublicController@index']);
-    Route::get('cadastrar', ['as' => 'rep_create', 'uses' => 'RepublicController@create']);
-    Route::get('{idRep}/editar', ['as' => 'rep_edit', 'uses' => 'RepublicController@edit']);
-    Route::post('salvar', ['as' => 'rep_store', 'uses' => 'RepublicController@store']);
-    Route::put('{idRep}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
+    //==================================== Rotas de Repúblicas ===========================================
+    Route::get('dashboard', ['as' => 'home', 'uses' => 'RepublicController@index']);
+    Route::get('buscar', ['as' => 'rep_search', 'uses' => 'RepublicController@search']);
 
+    Route::group(['prefix' => 'admin/republicas/'], function() {
+        Route::get('cadastrar', ['as' => 'rep_create', 'uses' => 'RepublicController@create']);
+        Route::get('convidar', ['as' => 'rep_invite', 'uses' => 'RepublicController@invite']);
+        Route::post('salvar', ['as' => 'rep_store', 'uses' => 'RepublicController@store']);
+        Route::get('{repId}/editar', ['as' => 'rep_edit', 'uses' => 'RepublicController@edit']);
+        Route::put('{repId}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
+        Route::post('{repId}/adicionar-membro', ['as' => 'rep_addMember', 'uses' => 'RepublicController@addMember']);
+    });
+    //===================================================================================================
+
+    Route::get('usuario/{userId}', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
+    Route::put('usuario/{userId}/salvar', ['as' => 'user_update', 'uses' => 'UserController@update']);
 });
+
+//=============================================== Images Route ============================================
+Route::get('/images/{folder}/{image?}/{size?}', ['as' => 'images', 'uses' => function($folder, $image, $size) {
+    $path = storage_path() . '/app/' . $folder . '/' . $image;
+    $img = Image::make($path)->resize(null, $size, function ($constraint) {
+        $constraint->aspectRatio();
+    });
+
+    return $img->response();
+}]);
+//==========================================================================================================

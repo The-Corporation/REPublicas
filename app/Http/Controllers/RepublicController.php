@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Republicas\Http\Requests;
 use Republicas\Models\Republic;
+use Republicas\Models\User;
 
 class RepublicController extends Controller
 {
@@ -17,7 +18,7 @@ class RepublicController extends Controller
      */
     public function index()
     {
-        if(!Auth::user()->republic) {
+        if(Auth::user()->republic == null) {
             return view('republics.create');
         } else {
             $republica = Auth::user()->republic;
@@ -43,7 +44,7 @@ class RepublicController extends Controller
      */
     public function store(Request $request)
     {
-        $republica = Republic::firstOrCreate($request->all());
+        $republica = Republic::create($request->all());
         $republica->responsible()->associate(Auth::user());
 
         $republica->save();
@@ -102,5 +103,22 @@ class RepublicController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function invite()
+    {
+        $users = User::all();
+
+        return view('republics.invite', compact('users'));
+    }
+
+    public function searchUser()
+    {
+
+    }
+
+    public function addMember()
+    {
+
     }
 }

@@ -132,7 +132,7 @@ body {
         z-index: 1;
         position: absolute;
         width: 250px;
-        margin-top: 51px;
+        margin-top: 66px;
     }
 
     .navbar-top-links .dropdown-messages,
@@ -297,6 +297,11 @@ table.dataTable thead .sorting:after {
 
 .huge {
     font-size: 40px;
+}
+
+.huge-text {
+    margin-top: 10px;
+    font-size: 25px;
 }
 
 .panel-green {

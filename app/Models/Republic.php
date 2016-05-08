@@ -36,7 +36,7 @@ class Republic extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany('Republicas\Models\User');
     }
 
     public function responsible()

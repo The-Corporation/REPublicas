@@ -26,12 +26,42 @@ Route::get('/', function() {
     return redirect()->route('home');
 });
 
-Route::group(['prefix' => 'admin/republicas/', 'middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function() {
 
-    Route::get('', ['as' => 'home', 'uses' => 'RepublicController@index']);
-    Route::get('cadastrar', ['as' => 'rep_create', 'uses' => 'RepublicController@create']);
-    Route::get('{idRep}/editar', ['as' => 'rep_edit', 'uses' => 'RepublicController@edit']);
-    Route::post('salvar', ['as' => 'rep_store', 'uses' => 'RepublicController@store']);
-    Route::put('{idRep}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
+    //==================================== Rotas de Repúblicas ===========================================
+    Route::get('dashboard', ['as' => 'home', 'uses' => 'RepublicController@index']);
+    Route::get('buscar', ['as' => 'rep_search', 'uses' => 'RepublicController@search']);
 
+    Route::group(['prefix' => 'admin/republicas/'], function() {
+        Route::get('cadastrar', ['as' => 'rep_create', 'uses' => 'RepublicController@create']);
+        Route::post('salvar', ['as' => 'rep_store', 'uses' => 'RepublicController@store']);
+        Route::get('{repId}/editar', ['as' => 'rep_edit', 'uses' => 'RepublicController@edit']);
+        Route::put('{repId}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
+        Route::post('{repId}/adicionar-membro', ['as' => 'rep_addMember', 'uses' => 'RepublicController@addMember']);
+
+        Route::group(['prefix' => '{repId}/contas/'], function() {
+            Route::get('', ['as' => 'bill_index', 'uses' => 'BillController@index']);
+            Route::get('teste', ['as' => 'bill_bills', 'uses' => 'BillController@bills']);
+            Route::post('salvar', ['as' => 'bill_store', 'uses' => 'BillController@store']);
+            Route::get('{billId}/editar', ['as' => 'bill_edit', 'uses' => 'BillController@edit']);
+            Route::put('{billId}/atualizar', ['as' => 'bill_update', 'uses' => 'BillController@update']);
+            Route::delete('{billId}/apagar', ['as' => 'bill_delete', 'uses' => 'BillController@delete']);
+        });
+    });
+    //===================================================================================================
+
+    Route::get('usuario/convidar', ['as' => 'rep_invite', 'uses' => 'UserController@invite']);
+    Route::get('usuario/{userId}', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
+    Route::put('usuario/{userId}/salvar', ['as' => 'user_update', 'uses' => 'UserController@update']);
 });
+
+//=============================================== Images Route ============================================
+Route::get('/images/{folder}/{image?}/{size?}', ['as' => 'images', 'uses' => function($folder, $image, $size) {
+    $path = storage_path() . '/app/' . $folder . '/' . $image;
+    $img = Image::make($path)->resize(null, $size, function ($constraint) {
+        $constraint->aspectRatio();
+    });
+
+    return $img->response();
+}]);
+//==========================================================================================================

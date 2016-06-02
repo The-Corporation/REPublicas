@@ -12,7 +12,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header"><i class="fa fa-home"></i> República
+                <h1 class="page-header"> República
                     <i class="fa fa-angle-double-right"></i><small> Editando {{ $republica->name }}</small></h1>
             </div>
             <!-- /.col-lg-12 -->

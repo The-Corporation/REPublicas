@@ -31,13 +31,13 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ $republica->vacancy }}</div>
-                        <div>Vagas</div>
+                        <div>Membros</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="{{ route('rep_invite') }}">
                 <div class="panel-footer">
-                    <span class="pull-left">Aplicar para vaga</span>
+                    <span class="pull-left">Convidar!</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -53,8 +53,8 @@
                         <i class="fa fa-calculator fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">4</div>
-                        <div>Contas</div>
+                        <div class="huge">{{ $republica->getCurrentMonth() }}</div>
+                        <div>R$ {{ $republica->getBillTotal() }}</div>
                     </div>
                 </div>
             </div>
@@ -72,17 +72,17 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-gamepad fa-5x"></i>
+                        <i class="fa fa-list fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">13</div>
-                        <div>Support Tickets!</div>
+                        <div class="huge">&nbsp;</div>
+                        <div>Listar Contas</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="{{ route('bill_index', $republica->id) }}">
                 <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">Registrar gasto!</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>

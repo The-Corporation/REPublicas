@@ -1,54 +1,37 @@
-<div class="navbar-default sidebar" role="navigation">
+<div id="navBarRep" class="navbar-default sidebar" role="navigation">
+    @if(Auth::user()->republic != null)
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li>
-                <a href=""><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                <a href="{{ route('home') }}" class="{{ strpos(Request::url(), 'dashboard') ? 'active' : '' }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
+
             <li>
-                <a href="#"><i class="fa fa-home"></i> República
+                <a href="#" class="{{ (strpos(Request::url(), 'republicas/cadastrar') ||
+                                      (strpos(Request::url(), '/editar'))  ||
+                                      (strpos(Request::url(), '/convidar')) ? 'active' : '') }}">
+                    <i class="fa fa-home"></i> República
                     <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
+                <ul class="nav nav-second-level {{ (strpos(Request::url(), 'republicas/cadastrar') ||strpos(Request::url(), '/editar')) ? 'collapse in' : '' }}">
+                    @if(Auth::user()->republic == null)
                     <li>
                         <a href="{{ route('rep_create') }}">Cadastrar</a>
                     </li>
-                    @if(isset(Auth::user()->republic))
+                    @endif
+                    @if(Auth::user()->republic != null)
                     <li>
-                        <a href="{{ route('rep_edit', Auth::user()->republic->id) }}">Editar</a>
+                        <a href="{{ route('rep_edit', Auth::user()->republic->id) }}" class="{{ strpos(Request::url(), 'editar') ? 'active' : '' }}">Editar</a>
+                    </li>
+                    @endif
+                    @if(Auth::user()->republic != null)
+                    <li>
+                        <a href="{{ route('rep_invite') }}" class="{{ strpos(Request::url(), 'convidar') ? 'active' : '' }}">Convidar morador</a>
                     </li>
                     @endif
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <li>
-                <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-            </li>
-            <li>
-                <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="panels-wells.html">Panels and Wells</a>
-                    </li>
-                    <li>
-                        <a href="buttons.html">Buttons</a>
-                    </li>
-                    <li>
-                        <a href="notifications.html">Notifications</a>
-                    </li>
-                    <li>
-                        <a href="typography.html">Typography</a>
-                    </li>
-                    <li>
-                        <a href="icons.html"> Icons</a>
-                    </li>
-                    <li>
-                        <a href="grid.html">Grid</a>
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
-            </li>
+
             <li>
                 <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -79,20 +62,9 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <li>
-                <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="blank.html">Blank Page</a>
-                    </li>
-                    <li>
-                        <a href="login.html">Login Page</a>
-                    </li>
-                </ul>
-                <!-- /.nav-second-level -->
-            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->
+    @endif
 </div>
 <!-- /.navbar-static-side -->

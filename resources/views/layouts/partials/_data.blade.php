@@ -53,8 +53,8 @@
                         <i class="fa fa-calculator fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">4</div>
-                        <div>Contas</div>
+                        <div class="huge">{{ $republica->getCurrentMonth() }}</div>
+                        <div>R$ {{ $republica->getBillTotal() }}</div>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="{{ route('bill_index', $republica->id) }}">
                 <div class="panel-footer">
                     <span class="pull-left">Registrar gasto!</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

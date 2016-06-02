@@ -299,6 +299,10 @@ table.dataTable thead .sorting:after {
     font-size: 40px;
 }
 
+.huge-money {
+    font-size: 35px;
+}
+
 .huge-text {
     margin-top: 10px;
     font-size: 25px;

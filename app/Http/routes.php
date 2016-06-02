@@ -34,14 +34,23 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::group(['prefix' => 'admin/republicas/'], function() {
         Route::get('cadastrar', ['as' => 'rep_create', 'uses' => 'RepublicController@create']);
-        Route::get('convidar', ['as' => 'rep_invite', 'uses' => 'RepublicController@invite']);
         Route::post('salvar', ['as' => 'rep_store', 'uses' => 'RepublicController@store']);
         Route::get('{repId}/editar', ['as' => 'rep_edit', 'uses' => 'RepublicController@edit']);
         Route::put('{repId}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
         Route::post('{repId}/adicionar-membro', ['as' => 'rep_addMember', 'uses' => 'RepublicController@addMember']);
+
+        Route::group(['prefix' => '{repId}/contas/'], function() {
+            Route::get('', ['as' => 'bill_index', 'uses' => 'BillController@index']);
+            Route::get('teste', ['as' => 'bill_bills', 'uses' => 'BillController@bills']);
+            Route::post('salvar', ['as' => 'bill_store', 'uses' => 'BillController@store']);
+            Route::get('{billId}/editar', ['as' => 'bill_edit', 'uses' => 'BillController@edit']);
+            Route::put('{billId}/atualizar', ['as' => 'bill_update', 'uses' => 'BillController@update']);
+            Route::delete('{billId}/apagar', ['as' => 'bill_delete', 'uses' => 'BillController@delete']);
+        });
     });
     //===================================================================================================
 
+    Route::get('usuario/convidar', ['as' => 'rep_invite', 'uses' => 'UserController@invite']);
     Route::get('usuario/{userId}', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
     Route::put('usuario/{userId}/salvar', ['as' => 'user_update', 'uses' => 'UserController@update']);
 });

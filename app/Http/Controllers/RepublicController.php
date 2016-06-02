@@ -105,13 +105,6 @@ class RepublicController extends Controller
         //
     }
 
-    public function invite()
-    {
-        $users = User::all();
-
-        return view('republics.invite', compact('users'));
-    }
-
     public function searchUser()
     {
 

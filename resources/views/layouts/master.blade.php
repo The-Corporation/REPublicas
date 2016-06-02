@@ -11,14 +11,16 @@
 
     <title>REPúblicas</title>
 
-    <link href="../../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
-    <link href="../../../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->
-    <link href="../../../bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet"> <!-- Custom CSS -->
-    <link href="../../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- Custom Fonts -->
-    <link href="../../../bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css"> <!-- Sweet Alert CSS-->
+    <link href="/../../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
+    <link href="/../../../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->
+    <link href="/../../../bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet"> <!-- Custom CSS -->
+    <link href="/../../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- Custom Fonts -->
+    <link href="/../../../bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css"> <!-- Sweet Alert CSS-->
 
     <!-- Jansy Bootstrap CDN -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CDN -->
+    <link href="/../../../bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -233,12 +235,7 @@
 
 @include('layouts.partials._footer')
 
-<script>
-    $(document).ready(function() {
-        //$('#teste').offcanvas();
-    });
-
-</script>
+@yield('inline_scripts')
 
 </body>
 </html>

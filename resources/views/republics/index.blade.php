@@ -13,7 +13,7 @@
         @endif
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header"><i class="fa fa-home"></i> {{ $republica->name }} </h1>
+                <h1 class="page-header"> {{ $republica->name }} </h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -45,15 +45,15 @@
                     <div class="panel-body">
                         <address>
                             <strong>{{ $republica->name }}</strong>
-                            <br>{{ $republica->address }}
-                            <br>{{ $republica->city }}, {{ $republica->state }}
+                            <br><br><i class="fa fa-road fa-fw"></i> {{ $republica->address }}
+                            <br><i class="fa fa-map-marker fa-fw"></i> {{ $republica->city }}, {{ $republica->state }}
                             <br>
-                            <abbr title="Telefone">Tel: </abbr>{{ $republica->telephone }}
+                            <i class="fa fa-phone fa-fw"></i> Tel: </abbr>{{ $republica->telephone }}
                         </address>
                         <address>
-                            <strong>{{ $republica->responsible->name }}</strong>
+                            <i class="fa fa-mail-forward fa-fw"></i> <strong>{{ $republica->responsible->name }}</strong>
                             <br>
-                            <em>{{ $republica->responsible->email }}</em>
+                            <em><i class="fa fa-envelope fa-fw"></i> {{ $republica->responsible->email }}</em>
                         </address>
                     </div>
                     <!-- /.panel-body -->

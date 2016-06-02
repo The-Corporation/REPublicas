@@ -11,11 +11,16 @@
 
     <title>REPúblicas</title>
 
-    <link href="../../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
-    <link href="../../../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->
-    <link href="../../../bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet"> <!-- Custom CSS -->
-    <link href="../../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- Custom Fonts -->
-    <link href="../../../bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css"> <!-- Sweet Alert CSS-->
+    <link href="/../../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
+    <link href="/../../../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->
+    <link href="/../../../bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet"> <!-- Custom CSS -->
+    <link href="/../../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- Custom Fonts -->
+    <link href="/../../../bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css"> <!-- Sweet Alert CSS-->
+
+    <!-- Jansy Bootstrap CDN -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CDN -->
+    <link href="/../../../bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,6 +33,26 @@
 
 <body>
 
+<style>
+    #noti_container {
+        position: relative;
+
+    }
+
+    .noti_bubble {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: auto;
+        background-color: #9f191f;
+        font-size: 0.7em;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 30px;
+        box-shadow: 1px 1px 1px gray;
+    }
+</style>
+
 <div id="wrapper">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -38,62 +63,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html"><strong class="text-success">REP</strong><small>úblicas</small></a>
+            <a class="navbar-brand" href="" style="padding-top: 22px;"><strong class="text-success">REP</strong><small>úblicas</small></a>
         </div>
         <!-- /.navbar-header -->
 
         <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-messages">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>Yesterday</em>
-                                        </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>Yesterday</em>
-                                        </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>Yesterday</em>
-                                        </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>Read All Messages</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-messages -->
-            </li>
-            <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -169,14 +143,15 @@
                             <i class="fa fa-angle-right"></i>
                         </a>
                     </li>
-                </ul>
-                <!-- /.dropdown-tasks -->
-            </li>
-            <!-- /.dropdown -->
+                </ul><!-- /.dropdown-tasks -->
+            </li><!-- /.dropdown -->
+
+            <!-- Notificações -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    <i id="noti_container" class="fa fa-bell fa-fw"></i>
                 </a>
+                <div class="noti_bubble">10</div>
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
                         <a href="#">
@@ -229,28 +204,27 @@
                             <i class="fa fa-angle-right"></i>
                         </a>
                     </li>
-                </ul>
-                <!-- /.dropdown-alerts -->
-            </li>
-            <!-- /.dropdown -->
+                </ul><!-- /.dropdown-alerts -->
+            </li><!-- /.dropdown -->
+
+            <!-- User Info -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }}  <i class="fa fa-caret-down"></i>
+                    <img src="{{ route('images', [Auth::user()->photo, 40]) }}"
+                         class="img img-circle" style=" width: 35px; height: 35px;">
+                    <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    <li><a href="{{ route('user_edit', Auth::user()->id) }}"><i class="fa fa-user fa-fw"></i> Meu Perfil</a>
                     </li>
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
-            <!-- /.dropdown -->
-        </ul>
-        <!-- /.navbar-top-links -->
+                </ul><!-- /.dropdown-user -->
+            </li><!-- /.dropdown -->
+        </ul><!-- /.navbar-top-links -->
 
         @include('layouts.partials._leftmenu')
     </nav>
@@ -260,6 +234,8 @@
 </div>
 
 @include('layouts.partials._footer')
+
+@yield('inline_scripts')
 
 </body>
 </html>

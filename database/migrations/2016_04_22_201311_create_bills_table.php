@@ -23,7 +23,7 @@ class CreateBillsTable extends Migration
             $table->foreign('billtype_id')->references('id')->on('billtypes');
 
             $table->string('name');
-            $table->decimal('value', 2);
+            $table->decimal('value');
             $table->timestamp('due_date');
 
             $table->timestamps();

@@ -25,13 +25,18 @@ class Bill extends Model
     /*
      * Relacionamentos
      */
-    public function billType()
+    public function billtype()
     {
-        return $this->belongsTo('Republicas\Models\BillType');
+        return $this->belongsTo(BillType::class);
     }
 
     public function republic()
     {
-        return $this->belongsTo('Republicas\Models\Republic');
+        return $this->belongsTo(Republic::class);
+    }
+
+    public function responsible()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

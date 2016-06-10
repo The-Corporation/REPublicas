@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Republicas\Http\Requests;
 use Republicas\Http\Controllers\Controller;
 use Republicas\Models\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -45,15 +46,35 @@ class UserController extends Controller
         return redirect()->route('user_edit', $user->id);
     }
 
+    public function updatePass(Request $request, $userId)
+    {
+        if(!\Request::ajax()) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($userId);
+        $user->password = bcrypt($request['data']);
+        $user->update();
+
+        if($user)
+            return response()->json(['status' => 'success']);
+        else
+            return response()->json(['status' => 'fail']);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($userId)
     {
-        //
+        $user = User::findOrFail($userId);
+        $user->delete();
+
+        if($user)
+            Auth::logout();
     }
 
     public function invite()

@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('telephone', 20);
             $table->string('photo');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

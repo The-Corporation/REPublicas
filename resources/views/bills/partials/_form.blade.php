@@ -1,9 +1,24 @@
+<!-- Bill Type Form Input -->
+<div class="form-group">
+    <div class="row">
+        <label class="col-md-4 control-label">Tipo<sup style="color: red;">*</sup></label>
+        <div class="col-md-5">
+            {!! Form::select('billtype_id', $bill_types->lists('name', 'id') ,null, ['class' => 'form-control input-sm select-billtype', 'id' => 'select-billtype']) !!}
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-success btn-xs" onclick="showAddBillType()">
+                <i class="fa fa-plus"></i> Adicionar tipo
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Name Form Input -->
 <div class="form-group">
     <div class="row">
         <label class="col-md-4 control-label">Nome<sup style="color: red;">*</sup></label>
         <div class="col-md-8">
-            {!! Form::text('name', null, ['class' => 'form-control input-sm']) !!}
+            {!! Form::text('name', null, ['class' => 'form-control input-sm billName']) !!}
         </div>
     </div>
 </div>
@@ -24,6 +39,16 @@
         <label class="col-md-4 control-label">Data de Vencimento<sup style="color: red;">*</sup></label>
         <div class="col-md-8">
             {!! Form::text('due_date', null, ['class' => 'form-control input-sm dates']) !!}
+        </div>
+    </div>
+</div>
+
+<!-- Responsible Form Input -->
+<div class="form-group">
+    <div class="row">
+        <label class="col-md-4 control-label">Responsável</label>
+        <div class="col-md-8">
+            {!! Form::select('user_id', $republica->users->lists('name', 'id'), null, ['class' => 'form-control input-sm']) !!}
         </div>
     </div>
 </div>

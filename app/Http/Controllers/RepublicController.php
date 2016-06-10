@@ -18,10 +18,14 @@ class RepublicController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->republic == null) {
+        if(Auth::user()->republic == null && isset(Auth::user()->republics)) {
             return view('republics.create');
         } else {
-            $republica = Auth::user()->republic;
+            if(Auth::user()->republic != null)
+                $republica = Auth::user()->republic;
+            else
+                $republica = Auth::user()->republics->first();
+
             return view('republics.index', compact('republica'));
         }
     }
@@ -44,12 +48,12 @@ class RepublicController extends Controller
      */
     public function store(Request $request)
     {
+        $current_user = Auth::user();
         $republica = Republic::create($request->all());
-        $republica->responsible()->associate(Auth::user());
+        $republica->responsible()->associate($current_user);
+        $republica->users()->attach($current_user);
 
         $republica->save();
-
-        //Session::flash('msg_success', 'República cadastrada.');
 
         return redirect()->route('home');
     }
@@ -113,5 +117,35 @@ class RepublicController extends Controller
     public function addMember()
     {
 
+    }
+
+    public function addMeta(Request $request, $repId)
+    {
+        if(!\Request::ajax()) {
+            abort(403);
+        }
+
+        // Desserealizando o array do form
+        $inputs = [];
+        foreach($request['data'] as $data) {
+            $inputs[$data['name']] = $data['value'];
+        }
+
+        $republica = Republic::findOrFail($repId);
+
+        if(isset($inputs['simple_price'])) {
+            $simple = str_replace('R$ ', '', $inputs['simple_price']); // Remove o R$ da máscara
+            $republica->simple_price = $simple;
+        }
+        if(isset($inputs['suite_price'])) {
+            $suite = str_replace('R$ ', '', $inputs['suite_price']); // Remove o R$ da máscara
+            $republica->suite_price = $suite;
+        }
+        $republica->save();
+
+        if($republica)
+            return response()->json(['status' => 'success']);
+        else
+            return response()->json(['status' => 'fail']);
     }
 }

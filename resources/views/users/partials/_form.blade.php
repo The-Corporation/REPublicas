@@ -1,6 +1,11 @@
 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 15px;">
-    <img src="{{ route('images', [$user->photo, 150]) }}" class="img img-rounded img-responsive pull-left"
+    <div class="col-md-12">
+        <img src="{{ route('images', [$user->photo, 150]) }}" class="img img-rounded img-responsive pull-left"
          style="box-shadow: 2px 2px 5px #888888; margin-left: calc(30% - 20px); width: 140px; height: 140px;">
+    </div>
+    <div class="col-md-12">
+        <a href="#" data-toggle="modal" data-target="#editPassword" class="btn btn-sm btn-success" style="margin-top: 10%; margin-left: calc(35% - 15px);">Alterar Senha</a>
+    </div>
 </div>
 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
     <div class="form-group">
@@ -30,13 +35,13 @@
         </div>
     </div>
 
-    <!-- Email Form Input -->
+    <!-- Email Form Input
     <div class="form-group input-group">
         <span class="input-group-addon"><strong>Email</strong></span>
         <div class="col-md-12 col-xs-12 input-group">
-            {!! Form::text('email', null, ['class' => 'form-control input-sm text-right']) !!}
+            {{-- Form::text('email', null, ['class' => 'form-control input-sm text-right']) --}}
         </div>
-    </div>
+    </div> -->
 </div>
 
 <div class="row">

@@ -4,148 +4,221 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header"> Contas
+                <h1 class="page-header"> <i class="fa fa-dollar"></i> Gastos
                     <button type="button" data-toggle="modal" data-target="#addBill"
-                            class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Adicionar conta
+                            class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Adicionar gasto
                     </button>
                 </h1>
                 <div class="clearfix"></div>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- /.row -->
-
-        @if(Session::has('msg_success'))
-            <div class="col-md-5 pull-right">
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Sucesso!</strong>
-                    {{Session::get('msg_success')}}
-                </div>
-            </div>
-
-        @elseif(Session::has('msg_fail'))
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Falha!</strong>
-                {{Session::get('msg_fail')}}
-            </div>
-        @endif
+            </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
 
         <div class="row">
-            <div class="col-lg-12" >
-                <h3>
-                </h3>
+            <div class="col-md-12" >
+            @foreach($bills as $key => $bill)
+                <div class="col-lg-4 col-md-6">
+                    <div class="panel panel-{{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'green' : 'red' }}">
+                    <a class="btnEditBill" href="#" data-bill="{{ $bill }}" data-date="{{ $bill->due_date->format('d/m/Y') }}">
+                        <div class="panel-heading" data-toggle="tooltip" title="Clique para editar" data-placement="top">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-money fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="text-money" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                                        {{ $bill->billtype->name }}
+                                    </div>
+                                    <div class="value-money">R$ {{ $bill->value }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    Responsável: <strong>{{ $bill->responsible->name }}</strong>
+                                </div class="col-xs-12">
+                            </div>
+                        </div>
+                    </a>
+                        <div class="panel-footer">
+                            <span class="pull-left">Vencimento: {{ $bill->due_date->format('d/m/Y') }}</span>
+                            <a id="pay-{{ $bill->id }}" href="#" class="do-payment" onclick="doPayment({{ $bill->id }})"><span class="pull-right"><i class="fa fa-dollar"></i> {{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'Pagar' : 'Pgt Atrasado' }}</span></a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
             </div>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <table class="table table-bordered table-striped table-hover" id="bills-table">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th style="text-align: center; max-width: 100px;">Nome</th>
-                        <th style="text-align: center; max-width: 100px;">Tipo</th>
-                        <th style="text-align: center; max-width: 100px;">Valor</th>
-                        <th style="text-align: center; max-width: 100px;">Vencimento</th>
-                    </tr>
-                    </thead>
-                    <tbody style="text-align: center;"></tbody>
-                    <tfoot>
-                    <tr>
-                        <th colspan="5" style="text-align:right;"></th>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        {{-- Modal para adicionar uma nova conta --}}
+        {{-- Modal para adicionar uma nova gasto --}}
         <div id="addBill" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <strong>Adicionar Conta</strong>
+                        <strong>Adicionar gasto</strong>
                     </div>
                     <div class="modal-body">
-                        {!! Form::model(new \Republicas\Models\Bill(), ['method' => 'POST',
-                            'route' => ['bill_store', $republica->id]]) !!}
-                        @include('bills.partials._form')
-                        {!! Form::close() !!}
+                        <div id="newBill" class="newBill">
+                            {!! Form::model(new \Republicas\Models\Bill(), ['method' => 'POST',
+                                'route' => ['bill_store', $republica->id]]) !!}
+                                @include('bills.partials._form')
+                            {!! Form::close() !!}
+                        </div>
+                        <div id="newBillType" class="newBillType">
+                            <h4 class="text-center">Adicionando novo tipo</h4>
+                            {!! Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'id' => 'formBillType']) !!}
+                                @include('bills.partials._form-billtype')
+                            {!! Form::close() !!}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- /#page-wrapper -->
+
+        {{-- Modal para editar uma gasto --}}
+        <div id="editBill" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <strong>Editando gasto</strong>
+                    </div>
+                    <div class="modal-body">
+                        <div id="newBill" class="newBill">
+                            {!! Form::open(['method' => 'PUT', 'id' => 'formEditBill']) !!}
+                                @include('bills.partials._form')
+                            {!! Form::close() !!}
+                        </div>
+                        <div id="newBillType" class="newBillType">
+                            <h4 class="text-center">Adicionando novo tipo</h4>
+                            {!! Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'id' => 'formBillType']) !!}
+                                @include('bills.partials._form-billtype')
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /#page-wrapper -->
 @endsection
 
 @section('inline_scripts')
-    <script>
-        $('#bills-table').dataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{!! route('bill_bills', $republica->id) !!}',
-            columns: [
-                {data: 'id', name: 'bills.id'},
-                {data: 'billName', name: 'bills.name'},
-                {data: 'name', name: 'billtypes.name'},
-                {data: 'value', name: 'bills.value'},
-                {data: 'due_date', name: 'bills.due_date'}
-            ],
-            "columnDefs": [
-                {"visible": false, "targets": 0}
-            ],
-            "language": {
-                "sEmptyTable": "Nenhum registro encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "_MENU_ resultados por página",
-                "sLoadingRecords": "Carregando...",
-                "sProcessing": "Processando...",
-                "sZeroRecords": "Nenhum registro encontrado",
-                "sSearch": "Pesquisar:",
-                "oPaginate": {
-                    "sNext": "Próximo",
-                    "sPrevious": "Anterior",
-                    "sFirst": "Primeiro",
-                    "sLast": "Último"
-                },
-                "oAria": {
-                    "sSortAscending": ": Ordenar colunas de forma ascendente",
-                    "sSortDescending": ": Ordenar colunas de forma descendente"
-                }
-            },
-            "responsive": true,
-            "footerCallback": function (tfoot, data, start, end, display) {
-                var api = this.api();
-                $( api.column( 3 ).footer() ).html( '<h4><span class="label label-danger">Total: R$ ' +
-                        api.column( 3, { page: 'current'} ).data().reduce( function ( a, b ) {
-                            return parseFloat(a) + parseFloat(b);
-                        + '</span></h4>'}, 0 )
-                );
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('.newBillType').hide();
+
+        $('.maskMoney').maskMoney({
+            thousands: '',
+            decimal: '.',
+            allowZero: true,
+            prefix: 'R$ '
+        });
+
+        $('.dates').mask('00/00/0000', {
+            placeholder: '__/__/____',
+            clearIfNotMatch: true
+        });
+    });
+
+    //***************************** Change between modals ************************************
+    function showAddBillType() {
+        $('.newBill').hide();
+        $('.newBillType').show();
+    };
+
+    function showAddBill() {
+        $('.newBill').show();
+        $('.newBillType').hide();
+    };
+    //********************************************************************************************
+
+    //********************************* Save Bill Function ****************************************
+    $('#formBillType').submit(function(e) {
+        e.preventDefault();
+        var data = $(this).serializeArray();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            method: 'POST',
+            url: '{{ route('bill_addBillType', Auth::user()->republic->id) }}',
+            data: {
+                data: data,
+            }
+        })
+        .done(function(data) {
+            if(data.status == 'success') {
+                $('#select-billtype').append('<option value="'+ data.billtype.id +'" selected>'+ data.billtype.name +'</option>');
+                showAddBill();
             }
         });
-    </script>
+    });
+    //********************************************************************************************
 
-    <script>
-        $(document).ready(function() {
-            $('.maskMoney').maskMoney({
-                thousands: '',
-                decimal: '.',
-                allowZero: true,
-                prefix: 'R$ '
-            });
+    //********************************* Update Bill Function ***************************************
+    $(document).on('click', '.btnEditBill', function() {
+        var bill = $(this).data('bill');
+        var billdate = $(this).data('date');
+        var modal = $('#editBill');
 
-            $('.dates').mask('00/00/0000', {
-                placeholder: '__/__/____',
-                clearIfNotMatch: true
-            });
+        $('.modal-body').data('bill', bill.id);
+        $('.modal-body').attr('data-bill', bill.id);
+        $('.modal-body').data('rep-id', bill.republic_id);
+        $('.modal-body').attr('data-rep-id', bill.republic_id);
+
+        modal.find('select[name=billtype_id]').val(bill.billtype_id);
+        modal.find('input[name=name]').val(bill.name);
+        modal.find('input[name=value]').val(bill.value);
+        modal.find('input[name=due_date]').val(billdate);
+        modal.find('select[name=user_id]').val(bill.user_id);
+        modal.modal();
+    });
+
+    $('#formEditBill').submit(function(e) {
+        debugger
+        e.preventDefault();
+        var bill = $('.modal-body').data('bill');
+        var rep_id = $('.modal-body').data('rep-id');
+        var datas = $(this).serializeArray();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            method: 'PUT',
+            url: '/admin/republicas/'+ rep_id +'/contas/'+ bill +'/atualizar',
+            data: {
+                data: datas,
+            }
+        })
+        .done(function(data) {
+            if(data.status == 'success')
+                location.reload();
         });
-    </script>
+    });
+    //***************************************************************************************
+
+    //****************************** Do Payment Function ***********************************
+    var doPayment = function(bill_id) {
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            method: 'PATCH',
+            url: '/admin/republicas/pagar/'+bill_id,
+        })
+        .done(function(data) {
+            if(data.status == 'success') {
+                toastr.options = {
+                    "preventDuplicates": true,
+                    "timeOut": "2000",
+                    "extendedTimeOut": "500",
+                    "showMethod": "slideDown",
+                    "hideMethod": "fadeOut",
+                }
+                toastr.success(data.bill + ' pago(a) com sucesso!', 'Sucesso');
+
+                $('#pay-'+bill_id).parent().parent().parent().remove();
+            }
+        });
+    };
+    //***************************************************************************************
+</script>
 @endsection

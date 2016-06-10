@@ -7,28 +7,12 @@
                 <h1 class="page-header"> {{ $user->name }}</h1>
             </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->
-        @if(Session::has('msg_success'))
-            <div class="col-md-5 pull-right">
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Sucesso!</strong>
-                    {{Session::get('msg_success')}}
-                </div>
-            </div>
-
-        @elseif(Session::has('msg_fail'))
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Falha!</strong>
-                {{Session::get('msg_fail')}}
-            </div>
-        @endif
 
         <div class="row">
             <div class="col-lg-8 col-md-8 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-file-text"></i> Seus dados
+                        <i class="fa fa-file-text"></i> Meus dados
                     </div><!-- /.panel-heading -->
                     <div class="panel-body">
                         {!! Form::model($user, ['id' => 'user_update', 'method' => 'PUT',
@@ -75,4 +59,58 @@
             @endif
         </div><!-- /.row -->
     </div><!-- /#page-wrapper -->
+
+    {{-- Modal para alterar senha --}}
+        <div id="editPassword" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <strong>Alterar Senha</strong>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            {!! Form::open(['method' => 'PATCH', 'id' => 'formEditPassword']) !!}
+                                @include('users.partials._form-password')
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+@endsection
+
+@section('inline_scripts')
+<script>
+    //********************************* Update Password Function ****************************************
+    $('#formEditPassword').submit(function(e) {
+        e.preventDefault();
+        var data = $(this).find('input[name=password]').val();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            method: 'PATCH',
+            url: '{{ route('user_updatePass', Auth::user()->id) }}',
+            data: {
+                data: data,
+            },
+            dataType: 'json'
+        })
+        .done(function(data) {
+            if(data.status == 'success') {
+                $('#editPassword').modal('hide');
+
+                toastr.options = {
+                    "preventDuplicates": true,
+                    "timeOut": "2000",
+                    "extendedTimeOut": "500",
+                    "showMethod": "slideDown",
+                    "hideMethod": "fadeOut",
+                }
+                toastr.success('Sua senha foi alterada!', 'Sucesso!');
+            }
+        });
+    });
+    //********************************************************************************************
+</script>
 @endsection

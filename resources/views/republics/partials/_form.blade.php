@@ -18,12 +18,22 @@
     </div>
 </div>
 
-<!-- Number of Rooms Form Input -->
+<!-- Number of Simple Rooms Form Input -->
 <div class="form-group">
     <div class="row">
-        <label class="col-md-3 control-label">Nº de Quartos<sup style="color: red;">*</sup></label>
+        <label class="col-md-3 control-label">Nº de Quartos Simples<sup style="color: red;">*</sup></label>
         <div class="col-md-9">
-            {!! Form::number('number_room', null, ['class' => 'form-control input-sm']) !!}
+            {!! Form::number('simple_rooms', null, ['class' => 'form-control input-sm']) !!}
+        </div>
+    </div>
+</div>
+
+<!-- Number of Suite Rooms Form Input -->
+<div class="form-group">
+    <div class="row">
+        <label class="col-md-3 control-label">Nº de Suítes<sup style="color: red;">*</sup></label>
+        <div class="col-md-9">
+            {!! Form::number('suite_rooms', null, ['class' => 'form-control input-sm']) !!}
         </div>
     </div>
 </div>
@@ -34,16 +44,6 @@
         <label class="col-md-3 control-label">Vagas<sup style="color: red;">*</sup></label>
         <div class="col-md-9">
             {!! Form::number('vacancy', null, ['class' => 'form-control input-sm']) !!}
-        </div>
-    </div>
-</div>
-
-<!-- Rooms Details Form Input -->
-<div class="form-group">
-    <div class="row">
-        <label class="col-md-3 control-label">Detalhes dos Quartos</label>
-        <div class="col-md-9">
-            {!! Form::textarea('room_detail', null, ['class' => 'form-control input-sm', 'rows' => 3]) !!}
         </div>
     </div>
 </div>
@@ -84,7 +84,7 @@
     <div class="row">
         <label class="col-md-3 control-label">Descrição</label>
         <div class="col-md-9">
-            {!! Form::textarea('description', null, ['class' => 'form-control input-sm', 'rows' => 5]) !!}
+            {!! Form::textarea('description', null, ['class' => 'form-control input-sm', 'rows' => 7, 'style' => 'resize:none;']) !!}
         </div>
     </div>
 </div>

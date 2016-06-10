@@ -14,5 +14,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
 <!-- Masks for Form Inputs -->
 <script src="/../../../jquery-mask-plugin/dist/jquery.mask.min.js"></script>
-<!-- DataTables -->
+<!-- DataTables-->
 <script src="/../../../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<!-- Toastr CDN-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="/../../../bower_components/jquery-slimscroll/jquery.slimscroll.js"></script>

@@ -41,7 +41,7 @@ class AuthController extends Controller
      */
     public function handleProviderCallback($provider)
     {
-        $user = Socialite::driver($provider )->user();
+        $user = Socialite::driver($provider)->user();
         //dd($user);
         // storing data to our user table and logging them in
         $data = [
@@ -49,7 +49,14 @@ class AuthController extends Controller
             'email' => $user->getEmail()
         ];
 
-        Auth::login(User::firstOrCreate($data));
+        $aux = User::firstOrCreate($data);
+
+        if($aux->photo == "") {
+            $aux->setDefaultPhoto();
+            $aux->save();
+        }
+
+        Auth::login($aux);
 
         //after login redirecting to home page
         return redirect($this->redirectPath());

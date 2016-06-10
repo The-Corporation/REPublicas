@@ -151,8 +151,8 @@
             <a href="{{ route('social_login', 'facebook') }}" class="btn btn-block btn-social btn-facebook">
                 <i class="fa fa-facebook"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login com Facebook
             </a>
-            <a href="{{ route('social_login', 'twitter') }}" class="btn btn-block btn-social btn-twitter">
-                <i class="fa fa-twitter"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login com Twitter
+            <a href="{{ route('social_login', 'google') }}" class="btn btn-block btn-social btn-google">
+                <i class="fa fa-google"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login com Gmail
             </a>
         </div>
     </div>

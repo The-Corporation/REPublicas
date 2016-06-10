@@ -141,6 +141,10 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
+        //Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -204,6 +208,11 @@ return [
         'Image'     => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'LocalizedCarbon'   => Laravelrus\LocalizedCarbon\LocalizedCarbon::class,
+        'DiffFormatter'     => Laravelrus\LocalizedCarbon\DiffFactoryFacade::class,
+
     ],
 
 ];

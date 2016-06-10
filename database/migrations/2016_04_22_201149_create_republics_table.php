@@ -22,8 +22,8 @@ class CreateRepublicsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('telephone');
-            $table->integer('number_room');
-            $table->string('room_detail');
+            $table->integer('simple_rooms');
+            $table->integer('suite_rooms');
             $table->string('address');
             $table->string('city');
             $table->string('state');

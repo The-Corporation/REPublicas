@@ -2,6 +2,9 @@
 
 namespace Republicas\Console;
 
+use Republicas\Models\Bill;
+use DB;
+use Mail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,7 +27,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('inspire')->hourly();
+        $schedule->call(function() {
+            //$bills = Bill::all();
+            Mail::send('emails.teste', ['user' => '1'], function($message) {
+                $message->to('santos.adaan@gmail.com', 'Adan')->subject('Testando');
+            });
+        })->dailyAt('21:06');
     }
 }

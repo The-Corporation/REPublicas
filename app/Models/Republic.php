@@ -4,20 +4,24 @@ namespace Republicas\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Kodeine\Metable\Metable;
 
 class Republic extends Model
 {
+    use Metable;
+
+    /**
+     * Meta Table
+     */
+    protected $metaTable = 'republics_meta';
+
     /**
      * The database table used by the model.
-     *
-     * @var string
      */
     protected $table = 'republics';
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array
      */
     protected $fillable = [
         'user_id',
@@ -27,39 +31,74 @@ class Republic extends Model
         'address',
         'city',
         'state',
-        'number_room',
-        'room_detail',
+        'simple_rooms',
+        'suite_rooms',
         'vacancy'
     ];
 
-    /*
-     * Relationships
+    /**
+     * Adding Accessors to the JSON
      */
+    protected $appends = [
+        'number_rooms',
+    ];
+
+
+    //******************************** Relationships *********************************
     public function users()
     {
-        return $this->belongsToMany('Republicas\Models\User');
+        return $this->belongsToMany(User::class, 'republic_users');
     }
 
     public function responsible()
     {
-        return $this->belongsTo('Republicas\Models\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function bills()
     {
-        return $this->hasMany('Republicas\Models\Bill');
+        return $this->hasMany(Bill::class);
     }
 
+    public function notices()
+    {
+        return $this->hasMany(Notice::class);
+    }
+    //****************************************************************************************
+
+    //***************************************** Accessors ************************************
+    /**
+     * Gets the number of rooms.
+     *
+     * @return   integer  The number of rooms attribute.
+     */
+    public function getNumberRoomsAttribute()
+    {
+        return $this->simple_rooms + $this->suite_rooms;
+    }
+    //******************************************************************************************
+    /**
+     * Gets the total sum of bills.
+     *
+     * @return     float  The bill total.
+     */
     public function getBillTotal()
     {
         $total = 0.0;
         foreach($this->bills as $bill) {
-            $total += $bill->value;
+            $date = $bill->due_date;
+            if($date->month == Carbon::now()->month)
+                $total += $bill->value;
         }
 
         return $total;
     }
 
+    /**
+     * Gets the current month.
+     *
+     * @return     string  The current month.
+     */
     public function getCurrentMonth()
     {
         $date = Carbon::now()->month;
@@ -90,7 +129,6 @@ class Republic extends Model
                 return 'Novembro';
             case 12:
                 return 'Dezembro';
-
         }
     }
 }

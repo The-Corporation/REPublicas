@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Republicas\Http\Requests;
 use Republicas\Http\Controllers\Controller;
 use Republicas\Models\Bill;
+use Republicas\Models\BillType;
 use Republicas\Models\Republic;
+use Republicas\Models\User;
 use Yajra\Datatables\Datatables;
 
 class BillController extends Controller
@@ -20,24 +22,11 @@ class BillController extends Controller
      */
     public function index($repId)
     {
-        $bills = Bill::where('republic_id', $repId);
-            //->whereBetween('due_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
-            //->orderBy('due_date')->get();
-
+        $bills = Bill::where('republic_id', $repId)->where('is_paid', '=', false)->orderBy('due_date')->get();
         $republica = Republic::findOrFail($repId);
+        $bill_types = BillType::where('republic_id', '=', $republica->id);
 
-        return view('bills.index', compact('republica', 'bills'));
-    }
-
-    public function bills($repId)
-    {
-        $bills = Bill::where('republic_id', $repId)
-            ->join('billtypes', 'bills.billtype_id', '=', 'billtypes.id')
-            ->select('bills.id', 'bills.name as billName', 'billtypes.name', 'value', 'due_date');
-
-        return Datatables::of($bills)->editColumn('due_date', function($bills) {
-            return $bills->due_date->format('d/m/Y');
-        })->make(true);
+        return view('bills.index', compact('republica', 'bills', 'bill_types'));
     }
 
     /**
@@ -52,38 +41,17 @@ class BillController extends Controller
 
         $date = Carbon::createFromFormat('d/m/Y', $request['due_date']);
         $value = str_replace('R$ ', '', $request['value']); // Remove o R$ da máscara
-        $bill = Bill::create($request->except('due_date', 'value'));
 
+        $bill = new Bill();
+        $bill->name = $request['name'];
         $bill->due_date = $date;
         $bill->value = $value;
-        $bill->billtype_id = 1; // 1 = Tipo República e 2 = Tipo Pessoal
         $bill->republic()->associate($republica);
-
+        $bill->billtype()->associate($request['billtype_id']);
+        $bill->responsible()->associate($request['user_id']);
         $bill->save();
 
         return redirect()->route('bill_index', $republica);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -93,9 +61,33 @@ class BillController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $repId, $billId)
     {
-        //
+        if(!\Request::ajax()) {
+            abort(403);
+        }
+
+        $inputs = [];
+        foreach($request['data'] as $data) {
+            $inputs[$data['name']] = $data['value'];
+        }
+
+        $date = Carbon::createFromFormat('d/m/Y', $inputs['due_date']);
+        $value = str_replace('R$ ', '', $inputs['value']); // Remove o R$ da máscara
+
+        $bill = Bill::findOrFail($billId);
+        $bill->name = $inputs['name'];
+        $bill->due_date = $date;
+        $bill->value = $value;
+        $bill->republic()->associate($repId);
+        $bill->billtype()->associate($inputs['billtype_id']);
+        $bill->responsible()->associate($inputs['user_id']);
+        $bill->update();
+
+        if($bill)
+            return response()->json(['status' => 'success', 'rep_id' => $repId]);
+        else
+            return response()->json(['status' => 'fail']);
     }
 
     /**
@@ -107,5 +99,44 @@ class BillController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addBillType(Request $request, $repId)
+    {
+        if(!\Request::ajax()) {
+            abort(403);
+        }
+
+        $datas = $request['data'];
+        $inputs = [];
+
+        foreach($datas as $data) {
+            $inputs[$data['name']] = $data['value'];
+        }
+
+        $billType = BillType::create($inputs);
+        $billType->republic()->associate($repId);
+        $billType->save();
+
+        if($billType)
+            return response()->json(['status' => 'success', 'billtype' => $billType]);
+        else
+            return response()->json(['status' => 'fail']);
+    }
+
+    public function payment($billId)
+    {
+        if(!\Request::ajax()) {
+            abort(403);
+        }
+
+        $bill = Bill::findOrFail($billId);
+        $bill->is_paid = true;
+        $bill->update();
+
+        if($bill->is_paid)
+            return response()->json(['status' => 'success', 'bill' => $bill->billtype->name]);
+        else
+            return response()->json(['status' => 'fail']);
     }
 }

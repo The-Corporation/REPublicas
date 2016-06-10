@@ -38,12 +38,19 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('{repId}/editar', ['as' => 'rep_edit', 'uses' => 'RepublicController@edit']);
         Route::put('{repId}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
         Route::post('{repId}/adicionar-membro', ['as' => 'rep_addMember', 'uses' => 'RepublicController@addMember']);
+        Route::post('{repId}/add-meta', ['as' => 'rep_addMeta', 'uses' => 'RepublicController@addMeta']);
+
+        Route::post('{repId}/aviso/salvar', ['as' => 'notice_store', 'uses' => 'NoticeController@store']);
+        Route::get('{repId}/aviso/{noticeId}/alterar', ['as' => 'notice_edit', 'uses' => 'NoticeController@edit']);
+        Route::put('{repId}/aviso/{noticeId}/salvar', ['as' => 'notice_update', 'uses' => 'NoticeController@update']);
+
+        // Rota para pagar um conta
+        Route::patch('pagar/{billId}', ['as' => 'bill_payment', 'uses' => 'BillController@payment']);
 
         Route::group(['prefix' => '{repId}/contas/'], function() {
             Route::get('', ['as' => 'bill_index', 'uses' => 'BillController@index']);
-            Route::get('teste', ['as' => 'bill_bills', 'uses' => 'BillController@bills']);
             Route::post('salvar', ['as' => 'bill_store', 'uses' => 'BillController@store']);
-            Route::get('{billId}/editar', ['as' => 'bill_edit', 'uses' => 'BillController@edit']);
+            Route::post('add-tipo', ['as' => 'bill_addBillType', 'uses' => 'BillController@addBillType']);
             Route::put('{billId}/atualizar', ['as' => 'bill_update', 'uses' => 'BillController@update']);
             Route::delete('{billId}/apagar', ['as' => 'bill_delete', 'uses' => 'BillController@delete']);
         });
@@ -52,7 +59,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('usuario/convidar', ['as' => 'rep_invite', 'uses' => 'UserController@invite']);
     Route::get('usuario/{userId}', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
+    Route::patch('usuario/{userId}/alterar', ['as' => 'user_updatePass', 'uses' => 'UserController@updatePass']);
     Route::put('usuario/{userId}/salvar', ['as' => 'user_update', 'uses' => 'UserController@update']);
+    Route::get('usuario/{userId}/desativar', ['as' => 'user_destroy', 'uses' => 'UserController@destroy']);
 });
 
 //=============================================== Images Route ============================================

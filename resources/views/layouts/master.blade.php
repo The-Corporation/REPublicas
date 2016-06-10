@@ -13,14 +13,17 @@
 
     <link href="/../../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
     <link href="/../../../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->
-    <link href="/../../../bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet"> <!-- Custom CSS -->
+    <link href="/../../../bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet"> <!-- Custom SB CSS -->
     <link href="/../../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> <!-- Custom Fonts -->
     <link href="/../../../bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet" type="text/css"> <!-- Sweet Alert CSS-->
+    <link href="/../../../css/custom.css" rel="stylesheet" type="text/css"> <!-- Custom CSS-->
 
     <!-- Jansy Bootstrap CDN -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css" rel="stylesheet">
     <!-- DataTables CDN -->
     <link href="/../../../bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Toastr CDN -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,7 +39,6 @@
 <style>
     #noti_container {
         position: relative;
-
     }
 
     .noti_bubble {
@@ -50,6 +52,13 @@
         font-weight: bold;
         border-radius: 30px;
         box-shadow: 1px 1px 1px gray;
+    }
+
+    .avatar {
+        margin-right: 1em;
+        -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #ddd, 0 0 0 0 rgba(0,0,0,.2);
+        -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #ddd, 0 0 0 0 rgba(0,0,0,.2);
+        box-shadow: 0 0 0 3px #fff, 0 0 0 4px #ddd, 0 0 0 0 rgba(0,0,0,.2);
     }
 </style>
 
@@ -210,14 +219,14 @@
             <!-- User Info -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <img src="{{ route('images', [Auth::user()->photo, 40]) }}"
-                         class="img img-circle" style=" width: 35px; height: 35px;">
+                    <img src="{{ route('images', [Auth::user()->photo, 300]) }}"
+                         class="img img-circle avatar" style=" width: 35px; height: 35px;">
                     <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="{{ route('user_edit', Auth::user()->id) }}"><i class="fa fa-user fa-fw"></i> Meu Perfil</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li><a href="{{ route('user_destroy', Auth::user()->id) }}"><i class="fa fa-ban fa-fw"></i> Desativar Conta</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>

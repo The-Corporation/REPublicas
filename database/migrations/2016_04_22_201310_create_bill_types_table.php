@@ -14,6 +14,11 @@ class CreateBillTypesTable extends Migration
     {
         Schema::create('billtypes', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->integer('republic_id')->unsigned()->index()->nullable();
+            $table->foreign('republic_id')->references('id')->on('republics')
+                ->onUpdate('cascade')->onDelete('cascade');
+
             $table->string('name');
             $table->string('description');
             $table->timestamps();

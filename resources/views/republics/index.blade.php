@@ -54,7 +54,11 @@
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         <strong>Dados Gerais</strong>
+
+                        @if(Auth::user()->can('manage_republics') || Auth::user()->can('edit_republics'))
                         <div class="pull-right"><a href="{{ route('rep_edit', $republica->id) }}" style="color: #fff;"><i class="fa fa-pencil"></i></a></div>
+                        @endif
+
                     </div>
                     <div class="panel-body">
                         <address>

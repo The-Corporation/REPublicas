@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header"> <i class="fa fa-dollar"></i> Gastos
-                    <button type="button" data-toggle="modal" data-target="#addBill"
+                    <button type="button" data-toggle="modal" data-target="#addBill" {{ Auth::user()->can('manage_bills') || Auth::user()->can('create_bills') ? : 'disabled'}}
                             class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Adicionar gasto
                     </button>
                 </h1>
@@ -18,6 +18,7 @@
             @foreach($bills as $key => $bill)
                 <div class="col-lg-4 col-md-6">
                     <div class="panel panel-{{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'green' : 'red' }}">
+                    @if(Auth::user()->can('manage_bills') || Auth::user()->can('edit_bills'))
                     <a class="btnEditBill" href="#" data-bill="{{ $bill }}" data-date="{{ $bill->due_date->format('d/m/Y') }}">
                         <div class="panel-heading" data-toggle="tooltip" title="Clique para editar" data-placement="top">
                             <div class="row">
@@ -38,9 +39,31 @@
                             </div>
                         </div>
                     </a>
+                    @else
+                    <div class="panel-heading" data-toggle="tooltip" title="Clique para editar" data-placement="top">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-money fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="text-money" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                                        {{ $bill->billtype->name }}
+                                    </div>
+                                    <div class="value-money">R$ {{ $bill->value }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    Responsável: <strong>{{ $bill->responsible->name }}</strong>
+                                </div class="col-xs-12">
+                            </div>
+                        </div>
+                    @endif
                         <div class="panel-footer">
                             <span class="pull-left">Vencimento: {{ $bill->due_date->format('d/m/Y') }}</span>
+                            @if(Auth::user()->can('manage_bills') || Auth::user()->can('pay_bills'))
                             <a id="pay-{{ $bill->id }}" href="#" class="do-payment" onclick="doPayment({{ $bill->id }})"><span class="pull-right"><i class="fa fa-dollar"></i> {{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'Pagar' : 'Pgt Atrasado' }}</span></a>
+                            @endif
                             <div class="clearfix"></div>
                         </div>
                     </div>

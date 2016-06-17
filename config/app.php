@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pt_BR',
 
     /*
     |--------------------------------------------------------------------------
@@ -153,6 +153,7 @@ return [
         Republicas\Providers\AuthServiceProvider::class,
         Republicas\Providers\EventServiceProvider::class,
         Republicas\Providers\RouteServiceProvider::class,
+        Republicas\Providers\CarbonLanguageProvider::class,
 
     ],
 

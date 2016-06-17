@@ -14,7 +14,7 @@
             </div>
             <a href="#" data-toggle="modal" data-target="#addMetaRep">
                 <div class="panel-footer">
-                    <span class="pull-left">Detalhes</span>
+                    <span class="pull-left">Valor dos Quartos</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -35,6 +35,7 @@
                     </div>
                 </div>
             </div>
+            @if(Auth::user()->can('manage_members') || Auth::user()->can('invite_members')  )
             <a href="{{ route('rep_invite') }}">
                 <div class="panel-footer">
                     <span class="pull-left">Convidar!</span>
@@ -42,6 +43,13 @@
                     <div class="clearfix"></div>
                 </div>
             </a>
+            @else
+            <div class="panel-footer">
+                <span class="pull-left">Convidar!</span>
+                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="clearfix"></div>
+            </div>
+            @endif
         </div>
     </div>
 
@@ -50,7 +58,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-calculator fa-5x"></i>
+                        <i class="fa fa-archive fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">{{ $republica->getCurrentMonth() }}</div>
@@ -60,7 +68,7 @@
             </div>
             <a href="#">
                 <div class="panel-footer">
-                    <span class="pull-left">Acessar Planilha</span>
+                    <span class="pull-left">Acessar Caixinha</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -102,7 +110,7 @@
             </div>
             <div class="modal-body">
                 <div id="newMetaRep">
-                    {!! Form::open(['method' => 'POST', 'id' => 'formAddMetaRep', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['method' => 'POST', 'id' => 'formAddMetaRep']) !!}
                         @include('republics.partials._form-meta')
                     {!! Form::close() !!}
                 </div>
@@ -115,10 +123,9 @@
 <script>
     $(document).ready(function() {
         $('.maskMoney').maskMoney({
-            thousands: '',
+            thousands: ',',
             decimal: '.',
             allowZero: true,
-            prefix: 'R$ '
         });
     });
 
@@ -152,31 +159,5 @@
         });
     });
     //********************************************************************************************
-
-    function unlockSimple() {
-        var icon = $('#iconSimple');
-        if(icon.hasClass('fa-lock')) {
-            $('#simple_price').removeAttr('disabled');
-            icon.removeClass('fa-lock');
-            icon.addClass('fa-unlock');
-        } else {
-            $('#simple_price').prop('disabled', true);
-            icon.removeClass('fa-unlock');
-            icon.addClass('fa-lock');
-        }
-    }
-
-    function unlockSuite() {
-        var icon = $('#iconSuite');
-        if(icon.hasClass('fa-lock')) {
-            $('#suite_price').removeAttr('disabled');
-            icon.removeClass('fa-lock');
-            icon.addClass('fa-unlock');
-        } else {
-            $('#suite_price').prop('disabled', true);
-            icon.removeClass('fa-unlock');
-            icon.addClass('fa-lock');
-        }
-    }
 </script>
 @endsection

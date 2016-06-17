@@ -2,7 +2,7 @@
 
 namespace Republicas\Models;
 
-use Zizaco\Entrust\EntrustRole;
+use Zizaco\Entrust\EntrustPermission;
 
 class Permission extends EntrustPermission
 {

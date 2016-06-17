@@ -1,12 +1,12 @@
 <!-- Price of Simple Room Form Input -->
 <div class="form-group">
     <div class="row">
-        <label class="col-md-4 control-label">Quarto Simples</label>
-        <div class="col-md-5">
-            {!! Form::text('simple_price', $republica->simple_price, ['class' => 'form-control maskMoney', 'id' => 'simple_price', 'disabled']) !!}
-        </div>
-        <div class="col-md-3">
-            <a id="lockSimple" href="#" onclick="unlockSimple()"><i id="iconSimple" class="fa fa-lock fa-2x"></i></a>
+        <label class="col-md-6">Quarto Simples</label>
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">R$</span>
+                {!! Form::text('simple_price', $republica->simple_price, ['class' => 'form-control maskMoney', 'id' => 'simple_price', Auth::user()->can('manage_rooms') ? '' : 'disabled']) !!}
+            </div>
         </div>
     </div>
 </div>
@@ -14,12 +14,12 @@
 <!-- Price of Suite Room Form Input -->
 <div class="form-group">
     <div class="row">
-        <label class="col-md-4 control-label">Suite</label>
-        <div class="col-md-5">
-            {!! Form::text('suite_price', $republica->suite_price, ['class' => 'form-control maskMoney', 'id' => 'suite_price', 'disabled']) !!}
-        </div>
-        <div class="col-md-3">
-            <a id="lockSuite" href="#" onclick="unlockSuite()"><i id="iconSuite" class="fa fa-lock fa-2x"></i></a>
+        <label class="col-md-6">Suite</label>
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">R$</span>
+                {!! Form::text('suite_price', $republica->suite_price, ['class' => 'form-control maskMoney', 'id' => 'suite_price', Auth::user()->can('manage_rooms') ? '' : 'disabled']) !!}
+            </div>
         </div>
     </div>
 </div>

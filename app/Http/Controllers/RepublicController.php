@@ -18,7 +18,7 @@ class RepublicController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->republic == null && !isset(Auth::user()->republics)) {
+        if(Auth::user()->republic == null) {
             return view('republics.create');
         } else {
             if(Auth::user()->republic != null)
@@ -37,6 +37,7 @@ class RepublicController extends Controller
      */
     public function create()
     {
+
         return view('republics.create');
     }
 

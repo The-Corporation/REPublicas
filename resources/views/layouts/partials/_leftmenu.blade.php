@@ -15,7 +15,7 @@
                 <ul class="nav nav-second-level {{ (strpos(Request::url(), 'republicas/cadastrar') ||strpos(Request::url(), '/editar')) ? 'collapse in' : '' }}">
                     @if(Auth::user()->republic != null || isset(Auth::user()->republics))
                     <li>
-                        <a href="{{-- route('rep_edit', (Auth::user()->republic != null) ? Auth::user()->republic->id : Auth::user()->republics->first()->id) --}}" class="{{ strpos(Request::url(), 'editar') ? 'active' : '' }}">Editar</a>
+                        <a href="{{route('bill_Type')}}" class="">Tipos de Gastos</a>
                     </li>
                     @endif
                     @if(Auth::user()->republic != null || isset(Auth::user()->republics))

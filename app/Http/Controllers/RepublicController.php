@@ -39,6 +39,7 @@ class RepublicController extends Controller
      */
     public function create()
     {
+
         return view('republics.create');
     }
 

@@ -1,8 +1,8 @@
 <!-- Name Form Input -->
 <div class="form-group">
     <div class="row">
-        <label class="col-md-2 control-label">Nome<sup style="color: red;">*</sup></label>
-        <div class="col-md-9">
+        <label class="col-md-4 control-label">Nome<sup style="color: red;">*</sup></label>
+        <div class="col-md-7">
             {!! Form::text('name', null, ['class' => 'form-control input-sm']) !!}
         </div>
     </div>
@@ -11,8 +11,8 @@
 <!-- Value Form Input -->
 <div class="form-group">
     <div class="row">
-        <label class="col-md-2 control-label">Descrição</label>
-        <div class="col-md-9">
+        <label class="col-md-4 control-label">Descrição</label>
+        <div class="col-md-7">
             {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => '5', 'style' => 'resize: none;']) !!}
         </div>
     </div>
@@ -26,7 +26,7 @@
         </button>
 
         &nbsp; &nbsp; &nbsp;
-        <button type="button" class="btn btn-danger btn-sm" onclick="showAddBill()">
+        <button type="button" class="btn btn-danger btn-sm">
             <i class="fa fa-undo"></i>
             Voltar
         </button>

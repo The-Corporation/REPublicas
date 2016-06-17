@@ -30,7 +30,6 @@ Route::group(['middleware' => ['auth']], function() {
 
     //==================================== Rotas de Repúblicas ===========================================
     Route::get('dashboard', ['as' => 'home', 'uses' => 'RepublicController@index']);
-    Route::get('buscar', ['as' => 'rep_search', 'uses' => 'RepublicController@search']);
 
     Route::group(['prefix' => 'admin/republicas/'], function() {
         Route::get('cadastrar', ['as' => 'rep_create', 'uses' => 'RepublicController@create']);
@@ -39,7 +38,14 @@ Route::group(['middleware' => ['auth']], function() {
         Route::put('{repId}/atualizar', ['as' => 'rep_update', 'uses' => 'RepublicController@update']);
         Route::post('{repId}/adicionar-membro', ['as' => 'rep_addMember', 'uses' => 'RepublicController@addMember']);
         Route::post('{repId}/add-meta', ['as' => 'rep_addMeta', 'uses' => 'RepublicController@addMeta']);
+        Route::get('{repId}/membros', ['as' => 'rep_members', 'uses' => 'RepublicController@members']);
 
+        // Rotas para convidar membros
+        Route::get('{repId}/usuario/convidar', ['as' => 'rep_invite', 'uses' => 'UserController@invite']);
+        Route::get('{repId}/usuario/{userId}/enviar-convite', ['as' => 'rep_sendInvite', 'uses' => 'RepublicController@sendInvite']);
+        Route::get('{repId}/usuario/{userId}/remover', ['as' => 'rep_removeMember', 'uses' => 'RepublicController@removeMember']);
+
+        // Rotas de Avisos
         Route::post('{repId}/aviso/salvar', ['as' => 'notice_store', 'uses' => 'NoticeController@store']);
         Route::get('{repId}/aviso/{noticeId}/alterar', ['as' => 'notice_edit', 'uses' => 'NoticeController@edit']);
         Route::put('{repId}/aviso/{noticeId}/salvar', ['as' => 'notice_update', 'uses' => 'NoticeController@update']);
@@ -47,6 +53,7 @@ Route::group(['middleware' => ['auth']], function() {
         // Rota para pagar um conta
         Route::patch('pagar/{billId}', ['as' => 'bill_payment', 'uses' => 'BillController@payment']);
 
+        // Rotas de contas
         Route::group(['prefix' => '{repId}/contas/'], function() {
             Route::get('', ['as' => 'bill_index', 'uses' => 'BillController@index']);
             Route::post('salvar', ['as' => 'bill_store', 'uses' => 'BillController@store']);
@@ -61,11 +68,15 @@ Route::group(['middleware' => ['auth']], function() {
     });
     //===================================================================================================
 
-    Route::get('usuario/convidar', ['as' => 'rep_invite', 'uses' => 'UserController@invite']);
+    Route::get('usuario/convite/{notificationId}', ['as' => 'user_showInvite', 'uses' => 'UserController@showInvite']);
+    Route::get('usuario/buscar', ['as' => 'rep_search', 'uses' => 'UserController@search']);
     Route::get('usuario/{userId}', ['as' => 'user_edit', 'uses' => 'UserController@edit']);
     Route::patch('usuario/{userId}/alterar', ['as' => 'user_updatePass', 'uses' => 'UserController@updatePass']);
     Route::put('usuario/{userId}/salvar', ['as' => 'user_update', 'uses' => 'UserController@update']);
     Route::get('usuario/{userId}/desativar', ['as' => 'user_destroy', 'uses' => 'UserController@destroy']);
+
+    Route::get('convite/{notificationId}/accept', ['as' => 'notification_accept', 'uses' => 'NotificationController@accept']);
+    Route::get('convite/{notificationId}/negar', ['as' => 'notification_deny', 'uses' => 'NotificationController@deny']);
 });
 
 //=============================================== Images Route ============================================

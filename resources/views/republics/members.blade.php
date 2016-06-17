@@ -13,26 +13,13 @@
         @endif
         <div class="row">
             <div class="col-lg-12 col-xs-12">
-                <h1 class="page-header"> Convidar futuro morador
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pull-right">
-                        {!! Form::open(['route' => 'rep_search', 'method' => 'GET', 'class' => 'form-horizontal']) !!}
-                        <div class="input-group">
-                            {!! Form::text('searchBox', null, ['class' => 'form-control',
-                                           'placeholder' => 'Pesquisar usuário...']) !!}
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </h1>
+                <h1 class="page-header"> Membros</h1>
             </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                @foreach($users as $user)
-                    @unless($user->id == Auth::user()->id)
+                @foreach($republica->users as $user)
                     <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
                         <div class="panel panel-green">
                             <div class="panel-heading">
@@ -46,16 +33,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="">
                                 <div class="panel-footer">
-                                    <span class="pull-left">Convidar!</span>
-                                    <span class="pull-right"><i style="color: red !important;" class="fa fa-plus-circle"></i></span>
-                                    <div class="clearfix"></div>
+                                    @unless($user->id == Auth::user()->id)
+                                        <span class="pull-left">Expulsar</span>
+                                        <a href="{{ route('rep_removeMember', [$user->republics->first()->id, $user->id]) }}">
+                                            <span class="pull-right"><i style="color: red !important;" class="fa fa-sign-out"></i></span>
+                                            </a>
+                                        <div class="clearfix"></div>
+                                    @endunless
                                 </div>
-                            </a>
                         </div>
                     </div>
-                    @endunless
                 @endforeach
             </div>
         </div><!-- /.row -->

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Republicas\Http\Requests;
 use Republicas\Models\Republic;
 use Republicas\Models\User;
+use Republicas\Models\Notification;
 
 class RepublicController extends Controller
 {
@@ -18,8 +19,9 @@ class RepublicController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->republic == null) {
-            return view('republics.create');
+        if(Auth::user()->republic == null && Auth::user()->republics->isEmpty()) {
+            $notifications = Notification::where('user_id', Auth::user()->id)->get();
+            return view('republics.create', compact('notifications'));
         } else {
             if(Auth::user()->republic != null)
                 $republica = Auth::user()->republic;
@@ -112,11 +114,6 @@ class RepublicController extends Controller
         //
     }
 
-    public function searchUser()
-    {
-
-    }
-
     public function addMember()
     {
 
@@ -150,5 +147,36 @@ class RepublicController extends Controller
             return response()->json(['status' => 'success']);
         else
             return response()->json(['status' => 'fail']);
+    }
+
+    public function sendInvite($repId, $userId)
+    {
+        $republica = Republic::findOrFail($repId);
+
+        $notification = Notification::create([
+            'republic_id' => $repId,
+            'user_id' => $userId,
+            'message' => 'A república ' . $republica->name . ' convidou você para ser um membro.'
+        ]);
+
+        return redirect()->route('rep_invite', $repId);
+    }
+
+    public function members($repId)
+    {
+        $republica = Republic::findOrFail($repId);
+
+        return view('republics.members', compact('republica'));
+    }
+
+    public function removeMember($repId, $userId)
+    {
+        $republica = Republic::findOrFail($repId);
+        $user = User::findOrFail($userId);
+
+        $user->roles()->sync([]);
+        $republica->users()->detach($user->id);
+
+        return redirect()->route('rep_members', $republica->id);
     }
 }

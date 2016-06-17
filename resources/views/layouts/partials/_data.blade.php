@@ -24,19 +24,21 @@
 
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-red">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-{{ (count($republica->users) > 1) ? 'group' : 'child' }} fa-5x"></i>
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge">{{ count($republica->users) }}</div>
-                        <div>{{ (count($republica->users) > 1) ? 'Membros' : 'Membro' }}</div>
+            <a href="{{ route('rep_members', $republica->id) }}">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-{{ (count($republica->users) > 1) ? 'group' : 'child' }} fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ count($republica->users) }}</div>
+                            <div>{{ (count($republica->users) > 1) ? 'Membros' : 'Membro' }}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
             @if(Auth::user()->can('manage_members') || Auth::user()->can('invite_members')  )
-            <a href="{{ route('rep_invite') }}">
+            <a href="{{ route('rep_invite', Auth::user()->republic or Auth::user()->republics()->first()) }}">
                 <div class="panel-footer">
                     <span class="pull-left">Convidar!</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

@@ -18,7 +18,7 @@ class RepublicController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->republic == null && isset(Auth::user()->republics)) {
+        if(Auth::user()->republic == null) {
             return view('republics.create');
         } else {
             if(Auth::user()->republic != null)
@@ -37,6 +37,7 @@ class RepublicController extends Controller
      */
     public function create()
     {
+
         return view('republics.create');
     }
 
@@ -54,6 +55,8 @@ class RepublicController extends Controller
         $republica->users()->attach($current_user);
 
         $republica->save();
+
+        $current_user->roles()->sync([2]);
 
         return redirect()->route('home');
     }
@@ -134,11 +137,11 @@ class RepublicController extends Controller
         $republica = Republic::findOrFail($repId);
 
         if(isset($inputs['simple_price'])) {
-            $simple = str_replace('R$ ', '', $inputs['simple_price']); // Remove o R$ da máscara
+            $simple = $inputs['simple_price'];
             $republica->simple_price = $simple;
         }
         if(isset($inputs['suite_price'])) {
-            $suite = str_replace('R$ ', '', $inputs['suite_price']); // Remove o R$ da máscara
+            $suite = $inputs['suite_price'];
             $republica->suite_price = $suite;
         }
         $republica->save();

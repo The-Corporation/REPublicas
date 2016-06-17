@@ -50,7 +50,11 @@ Route::group(['middleware' => ['auth']], function() {
         Route::group(['prefix' => '{repId}/contas/'], function() {
             Route::get('', ['as' => 'bill_index', 'uses' => 'BillController@index']);
             Route::post('salvar', ['as' => 'bill_store', 'uses' => 'BillController@store']);
-            Route::post('add-tipo', ['as' => 'bill_addBillType', 'uses' => 'BillController@addBillType']);
+            Route::post('add-tipo', ['as' => 'bill_addBillType', 'uses' => 'BillTypeController@addBillType']);
+            Route::get('tipos', ['as' => 'bill_Type', 'uses' => 'BillTypeController@tipos']);
+            Route::get('{typeId}/editar', ['as' => 'type_edit', 'uses' => 'BillTypeController@edit']);
+            Route::put('{typeId}/atualizar', ['as' => 'type_update', 'uses' => 'BillTypeController@update']);
+            Route::get('{typeId}/remover', ['as' => 'type_destroy', 'uses' => 'BillTypeController@destroy']);
             Route::put('{billId}/atualizar', ['as' => 'bill_update', 'uses' => 'BillController@update']);
             Route::delete('{billId}/apagar', ['as' => 'bill_delete', 'uses' => 'BillController@delete']);
         });

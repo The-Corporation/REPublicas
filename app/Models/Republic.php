@@ -47,7 +47,7 @@ class Republic extends Model
     //******************************** Relationships *********************************
     public function users()
     {
-        return $this->belongsToMany(User::class, 'republic_users');
+        return $this->belongsToMany(User::class, 'republic_users')->withTimestamps();
     }
 
     public function responsible()

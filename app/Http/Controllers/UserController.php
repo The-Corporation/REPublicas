@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Republicas\Http\Requests;
 use Republicas\Http\Controllers\Controller;
 use Republicas\Models\User;
+use Republicas\Models\Notification;
 use Auth;
 
 class UserController extends Controller
@@ -77,10 +78,26 @@ class UserController extends Controller
             Auth::logout();
     }
 
-    public function invite()
+    public function invite($repId)
     {
-        $users = User::all();
+        $users = User::join('republic_users', 'users.id', '=', 'republic_users.user_id')
+                                ->where('republic_users.republic_id', '!=', $repId)->get();
 
         return view('republics.invite', compact('users'));
+    }
+
+    public function showInvite($notificationId)
+    {
+        $notification = Notification::findOrFail($notificationId);
+
+        return view('users.invite', compact('notification'));
+    }
+
+    public function search(Request $request)
+    {
+        $users = User::where('email', 'like', '%'.$request['searchBox'].'%')->get();
+        $searchInput = $request['searchBox'];
+
+        return view('republics.users', compact('users', 'searchInput'));
     }
 }

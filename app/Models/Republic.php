@@ -3,8 +3,9 @@
 namespace Republicas\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Kodeine\Metable\Metable;
+use Republicas\Models\BillType;
+use Illuminate\Database\Eloquent\Model;
 
 class Republic extends Model
 {
@@ -47,7 +48,7 @@ class Republic extends Model
     //******************************** Relationships *********************************
     public function users()
     {
-        return $this->belongsToMany(User::class, 'republic_users');
+        return $this->belongsToMany(User::class, 'republic_users')->withTimestamps();
     }
 
     public function responsible()
@@ -60,9 +61,19 @@ class Republic extends Model
         return $this->hasMany(Bill::class);
     }
 
+    public function billtypes()
+    {
+        return $this->hasMany(BillType::class);
+    }
+
     public function notices()
     {
         return $this->hasMany(Notice::class);
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany( Room::class );
     }
     //****************************************************************************************
 
@@ -84,14 +95,72 @@ class Republic extends Model
      */
     public function getBillTotal()
     {
-        $total = 0.0;
+        $bills_total = 0.0;
+        $rent = $this->getRent();
+
         foreach($this->bills as $bill) {
             $date = $bill->due_date;
-            if($date->month == Carbon::now()->month)
-                $total += $bill->value;
+            if($date->month == Carbon::now()->month && $date->year == Carbon::now()->year)
+                $bills_total += $bill->value;
         }
 
-        return $total;
+        return $bills_total + $rent;
+    }
+
+    /**
+     * Gets the rent.
+     *
+     * @return     float  The rent.
+     */
+    public function getRent()
+    {
+        $rent = 0.0;
+
+        foreach ($this->rooms as $key => $room) {
+            $rent += $room->price;
+        }
+
+        return $rent;
+    }
+
+    /**
+     * Gets the bills by type.
+     *
+     * @param      <type>  $type   The type
+     * @return     array   The bills by type.
+     */
+    public function  getBillsByType($typeId)
+    {
+        $bills = [];
+
+        foreach ($this->bills->sortBy('due_date') as $key => $bill) {
+            if($bill->getByType($typeId))
+                $bills[$bill->id] = floatval($bill->getByType($typeId)->value);
+        }
+
+        return $bills;
+    }
+
+    public function getBillsCurrentMonthByType($typeId)
+    {
+        $bills = 0;
+
+        foreach ($this->bills as $key => $bill) {
+            if($bill->getByType($typeId) && ($bill->due_date->month == Carbon::now()->month && $bill->due_date->year == Carbon::now()->year)) {
+                $bills = floatval($bill->getByType($typeId)->value);
+            }
+        }
+
+        return $bills;
+    }
+
+    public function getCurrentMonthBillPercentageByType($typeId)
+    {
+        $bills_total = $this->getBillTotal();
+        $rent = $this->getRent();
+        $bill = $this->getBillsCurrentMonthByType($typeId);
+
+        return ($bill/$bills_total)*100;
     }
 
     /**

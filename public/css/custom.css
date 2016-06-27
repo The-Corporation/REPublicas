@@ -8,3 +8,11 @@
     font-size: 1.5em;
     text-decoration: underline;
 }
+
+.panel-primary .panel-heading{
+    background-color: #428bca;
+}
+
+.panel-primary .panel-heading {
+    color: #fff;
+}

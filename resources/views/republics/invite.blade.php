@@ -15,7 +15,7 @@
             <div class="col-lg-12 col-xs-12">
                 <h1 class="page-header"> Convidar futuro morador
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pull-right">
-                        {!! Form::open(['route' => 'rep_search', 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                        {!! Form::open(['route' => 'user_search', 'method' => 'GET', 'class' => 'form-horizontal']) !!}
                         <div class="input-group">
                             {!! Form::text('searchBox', null, ['class' => 'form-control',
                                            'placeholder' => 'Pesquisar usuário...']) !!}
@@ -28,28 +28,6 @@
                 </h1>
             </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->
-
-        @if(Session::has('msg_success'))
-            <div class="col-md-5 pull-right">
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Sucesso!</strong>
-                    {{Session::get('msg_success')}}
-                </div>
-            </div>
-
-        @elseif(Session::has('msg_fail'))
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Falha!</strong>
-                {{Session::get('msg_fail')}}
-            </div>
-        @endif
-
-        <div class="row">
-            <!-- SearchBox Form Input -->
-
-        </div><br>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -64,7 +42,7 @@
                                              style="margin: auto;">
                                     </div>
                                     <div class="col-xs-12 text-center">
-                                        <div>{{ $user->name }}</div>
+                                        <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ $user->name }}</div>
                                     </div>
                                 </div>
                             </div>

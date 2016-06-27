@@ -36,7 +36,8 @@ class User extends Model implements AuthenticatableContract,
         'email',
         'telephone',
         'password',
-        'photo'
+        'photo',
+        'room_id'
     ];
 
     /**
@@ -64,6 +65,10 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasMany(Notice::class);
     }
 
+    public function room()
+    {
+        return $this->belongsToOne( Room::class );
+    }
     /**
      * Sets the default photo.
      */

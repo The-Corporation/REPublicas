@@ -18,4 +18,4 @@
 <script src="/../../../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
 <!-- Toastr CDN-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<script src="/../../../bower_components/jquery-slimscroll/jquery.slimscroll.js"></script>
+<script src="/../../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>

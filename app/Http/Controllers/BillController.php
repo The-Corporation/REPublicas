@@ -22,7 +22,8 @@ class BillController extends Controller
      */
     public function index($repId)
     {
-        $bills = Bill::where('republic_id', $repId)->where('is_paid', '=', false)->orderBy('due_date')->get();
+        $bills = Bill::where('republic_id', $repId)->where('is_paid', '=', false)
+                            ->orderBy('due_date')->get();
         $republica = Republic::findOrFail($repId);
         $bill_types = BillType::where('republic_id', '=', $republica->id);
 
@@ -86,40 +87,6 @@ class BillController extends Controller
 
         if($bill)
             return response()->json(['status' => 'success', 'rep_id' => $repId]);
-        else
-            return response()->json(['status' => 'fail']);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function addBillType(Request $request, $repId)
-    {
-        if(!\Request::ajax()) {
-            abort(403);
-        }
-
-        $datas = $request['data'];
-        $inputs = [];
-
-        foreach($datas as $data) {
-            $inputs[$data['name']] = $data['value'];
-        }
-
-        $billType = BillType::create($inputs);
-        $billType->republic()->associate($repId);
-        $billType->save();
-
-        if($billType)
-            return response()->json(['status' => 'success', 'billtype' => $billType]);
         else
             return response()->json(['status' => 'fail']);
     }

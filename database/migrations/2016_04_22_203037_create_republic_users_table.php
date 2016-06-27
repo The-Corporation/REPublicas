@@ -13,8 +13,6 @@ class CreateRepublicUsersTable extends Migration
     public function up()
     {
         Schema::create('republic_users', function (Blueprint $table) {
-            $table->increments('id');
-
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')
                 ->on('users')->onUpdate('cascade')->onDelete('cascade');
@@ -23,6 +21,7 @@ class CreateRepublicUsersTable extends Migration
             $table->foreign('republic_id')->references('id')
                 ->on('republics')->onUpdate('cascade')->onDelete('cascade');
 
+            $table->primary(['user_id', 'republic_id']);
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@
         @endif
         <div class="row">
             <div class="col-lg-12 col-xs-12">
-                <h1 class="page-header"> Moradores com email similar a: {{ $searchInput}}</h1>
+                <h1 class="page-header"> Usuários com email similar a: {{ $searchInput}}</h1>
             </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->
 
@@ -23,7 +23,7 @@
                     <div class="alert alert-danger">Não há usuários com esse email!</div>
                 @else
                     @foreach($users as $user)
-                        @unless($user->id == Auth::user()->id)
+                        @unless($user->id == Auth::user()->id || !$user->republics->isEmpty())
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
                             <div class="panel panel-green">
                                 <div class="panel-heading">

@@ -3,12 +3,13 @@
 namespace Republicas\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
+use Republicas\Events\RepublicWasCreated;
 use Republicas\Http\Requests;
+use Republicas\Models\Notice;
+use Republicas\Models\Notification;
 use Republicas\Models\Republic;
 use Republicas\Models\User;
-use Republicas\Models\Notification;
 
 class RepublicController extends Controller
 {
@@ -28,7 +29,8 @@ class RepublicController extends Controller
             else
                 $republica = Auth::user()->republics->first();
 
-            return view('republics.index', compact('republica'));
+            $notices = Notice::where('republic_id', $republica->id)->orderBy('created_at', 'desc')->get();
+            return view('republics.index', compact('republica', 'notices'));
         }
     }
 
@@ -57,8 +59,11 @@ class RepublicController extends Controller
         $republica->users()->attach($current_user);
 
         $republica->save();
-
         $current_user->roles()->sync([2]);
+
+        if($republica) {
+            \Event::fire(new RepublicWasCreated($republica));
+        }
 
         return redirect()->route('home');
     }

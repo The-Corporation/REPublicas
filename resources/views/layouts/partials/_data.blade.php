@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-3 col-xs-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
@@ -12,9 +12,9 @@
                     </div>
                 </div>
             </div>
-            <a href="#" data-toggle="modal" data-target="#addMetaRep">
+            <a href="{{ route('room_index', $republica->id) }}">
                 <div class="panel-footer">
-                    <span class="pull-left">Valor dos Quartos</span>
+                    <span class="pull-left">Detalhes do Quartos</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-3 col-xs-6">
         <div class="panel panel-red">
             <a href="{{ route('rep_members', $republica->id) }}">
                 <div class="panel-heading">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-3 col-xs-6">
         <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="{{ route('report_general', $republica->id) }}">
                 <div class="panel-footer">
                     <span class="pull-left">Acessar Caixinha</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -77,7 +77,7 @@
             </a>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-3 col-xs-6">
         <div class="panel panel-yellow">
             <div class="panel-heading">
                 <div class="row">
@@ -101,65 +101,3 @@
     </div>
 </div>
 <!-- /.row -->
-
-{{-- Modal para adicionar meta dados para republica --}}
-<div id="addMetaRep" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <strong>Valores dos quartos</strong>
-            </div>
-            <div class="modal-body">
-                <div id="newMetaRep">
-                    {!! Form::open(['method' => 'POST', 'id' => 'formAddMetaRep']) !!}
-                        @include('republics.partials._form-meta')
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section('inline_scripts')
-<script>
-    $(document).ready(function() {
-        $('.maskMoney').maskMoney({
-            thousands: ',',
-            decimal: '.',
-            allowZero: true,
-        });
-    });
-
-    //********************************* Save Meta Function ****************************************
-    $('#formAddMetaRep').submit(function(e) {
-        e.preventDefault();
-        var data = $(this).serializeArray();
-
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-            method: 'POST',
-            url: '{{ route('rep_addMeta', $republica->id) }}',
-            data: {
-                data: data,
-            },
-            dataType: 'json'
-        })
-        .done(function(data) {
-            if(data.status == 'success') {
-                $('#addMetaRep').modal('hide');
-
-                toastr.options = {
-                    "preventDuplicates": true,
-                    "timeOut": "2000",
-                    "extendedTimeOut": "500",
-                    "showMethod": "slideDown",
-                    "hideMethod": "fadeOut",
-                }
-                toastr.success('Detalhes dos Quartos salvos.', 'Sucesso!');
-            }
-        });
-    });
-    //********************************************************************************************
-</script>
-@endsection

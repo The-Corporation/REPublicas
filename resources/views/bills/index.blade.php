@@ -1,129 +1,128 @@
 @extends('layouts.master')
 
 @section('content')
-    <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header"> <i class="fa fa-dollar"></i> Gastos
-                    <button type="button" data-toggle="modal" data-target="#addBill" {{ Auth::user()->can('manage_bills') || Auth::user()->can('create_bills') ? : 'disabled'}}
-                            class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Adicionar gasto
-                    </button>
-                </h1>
-                <div class="clearfix"></div>
-            </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{ $bills->first()->republic->name or 'República    '}} <i class="fa fa-angle-double-right"></i> <small> Gastos </small>
+                <button type="button" data-toggle="modal" data-target="#addBill" {{ Auth::user()->can('manage_bills') || Auth::user()->can('create_bills') ? : 'disabled'}}
+                        class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Adicionar gasto
+                </button>
+            </h1>
+            <div class="clearfix"></div>
+        </div><!-- /.col-lg-12 -->
+    </div><!-- /.row -->
 
-        <div class="row">
-            <div class="col-md-12" >
-            @foreach($bills as $key => $bill)
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-{{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'green' : 'red' }}">
-                    @if(Auth::user()->can('manage_bills') || Auth::user()->can('edit_bills'))
-                    <a class="btnEditBill" href="#" data-bill="{{ $bill }}" data-date="{{ $bill->due_date->format('d/m/Y') }}">
-                        <div class="panel-heading" data-toggle="tooltip" title="Clique para editar" data-placement="top">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-money fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="text-money" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-                                        {{ $bill->billtype->name }}
-                                    </div>
-                                    <div class="value-money">R$ {{ $bill->value }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    Responsável: <strong>{{ $bill->responsible->name }}</strong>
-                                </div class="col-xs-12">
-                            </div>
-                        </div>
-                    </a>
-                    @else
+    <div class="row">
+        <div class="col-md-12" >
+        @foreach($bills as $key => $bill)
+            <div class="col-lg-4 col-md-6">
+                <div class="panel panel-{{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'green' : 'red' }}">
+                @if(Auth::user()->can('manage_bills') || Auth::user()->can('edit_bills'))
+                <a class="btnEditBill" href="#" data-bill="{{ $bill }}" data-date="{{ $bill->due_date->format('d/m/Y') }}">
                     <div class="panel-heading" data-toggle="tooltip" title="Clique para editar" data-placement="top">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-money fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="text-money" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-                                        {{ $bill->billtype->name }}
-                                    </div>
-                                    <div class="value-money">R$ {{ $bill->value }}</div>
-                                </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-money fa-5x"></i>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    Responsável: <strong>{{ $bill->responsible->name }}</strong>
-                                </div class="col-xs-12">
+                            <div class="col-xs-9 text-right">
+                                <div class="text-money" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                                    {{ $bill->billtype->name }}
+                                </div>
+                                <div class="value-money">R$ {{ $bill->value }}</div>
                             </div>
                         </div>
-                    @endif
-                        <div class="panel-footer">
-                            <span class="pull-left">Vencimento: {{ $bill->due_date->format('d/m/Y') }}</span>
-                            @if(Auth::user()->can('manage_bills') || Auth::user()->can('pay_bills'))
-                            <a id="pay-{{ $bill->id }}" href="#" class="do-payment" onclick="doPayment({{ $bill->id }})"><span class="pull-right"><i class="fa fa-dollar"></i> {{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'Pagar' : 'Pgt Atrasado' }}</span></a>
-                            @endif
-                            <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                Responsável: <strong>{{ $bill->responsible->name }}</strong>
+                            </div class="col-xs-12">
                         </div>
                     </div>
-                </div>
-            @endforeach
-            </div>
-        </div>
-
-        {{-- Modal para adicionar uma nova gasto --}}
-        <div id="addBill" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <strong>Adicionar gasto</strong>
-                    </div>
-                    <div class="modal-body">
-                        <div id="newBill" class="newBill">
-                            {!! Form::model(new \Republicas\Models\Bill(), ['method' => 'POST',
-                                'route' => ['bill_store', $republica->id]]) !!}
-                                @include('bills.partials._form')
-                            {!! Form::close() !!}
+                </a>
+                @else
+                <div class="panel-heading" data-toggle="tooltip" title="Clique para editar" data-placement="top">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-money fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="text-money" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                                    {{ $bill->billtype->name }}
+                                </div>
+                                <div class="value-money">R$ {{ $bill->value }}</div>
+                            </div>
                         </div>
-                        <div id="newBillType" class="newBillType">
-                            <h4 class="text-center">Adicionando novo tipo</h4>
-                            {!! Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'id' => 'formBillType']) !!}
-                                @include('bills.partials._form-billtype')
-                            {!! Form::close() !!}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                Responsável: <strong>{{ $bill->responsible->name }}</strong>
+                            </div class="col-xs-12">
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Modal para editar uma gasto --}}
-        <div id="editBill" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <strong>Editando gasto</strong>
-                    </div>
-                    <div class="modal-body">
-                        <div id="newBill" class="newBill">
-                            {!! Form::open(['method' => 'PUT', 'id' => 'formEditBill']) !!}
-                                @include('bills.partials._form')
-                            {!! Form::close() !!}
-                        </div>
-                        <div id="newBillType" class="newBillType">
-                            <h4 class="text-center">Adicionando novo tipo</h4>
-                            {!! Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'id' => 'formBillType']) !!}
-                                @include('bills.partials._form-billtype')
-                            {!! Form::close() !!}
-                        </div>
+                @endif
+                    <div class="panel-footer">
+                        <span class="pull-left">Vencimento: {{ $bill->due_date->format('d/m/Y') }}</span>
+                        @if(Auth::user()->can('manage_bills') || Auth::user()->can('pay_bills'))
+                        <a id="pay-{{ $bill->id }}" href="#" class="do-payment" onclick="doPayment({{ $bill->id }})"><span class="pull-right"><i class="fa fa-dollar"></i> {{ ($bill->due_date->month == Carbon\Carbon::now()->month) ? 'Pagar' : 'Pgt Atrasado' }}</span></a>
+                        @endif
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
+        @endforeach
         </div>
+    </div>
 
-    </div><!-- /#page-wrapper -->
+    {{-- Modal para adicionar uma nova gasto --}}
+    <div id="addBill" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <strong>Adicionar gasto</strong>
+                </div>
+                <div class="modal-body">
+                    <div id="newBill" class="newBill">
+                        {!! Form::model(new \Republicas\Models\Bill(), ['method' => 'POST',
+                            'route' => ['bill_store', $republica->id]]) !!}
+                            @include('bills.partials._form')
+                        {!! Form::close() !!}
+                    </div>
+                    <div id="newBillType" class="newBillType">
+                        <h4 class="text-center">Adicionando novo tipo</h4>
+                        {!! Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'id' => 'formBillType']) !!}
+                            @include('bills.partials._form-billtype')
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal para editar um gasto --}}
+    <div id="editBill" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <strong>Editando gasto</strong>
+                </div>
+                <div class="modal-body">
+                    <div id="newBill" class="newBill">
+                        {!! Form::open(['method' => 'PUT', 'id' => 'formEditBill']) !!}
+                            @include('bills.partials._form')
+                        {!! Form::close() !!}
+                    </div>
+                    <div id="newBillType" class="newBillType">
+                        <h4 class="text-center">Adicionando novo tipo</h4>
+                        {!! Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'id' => 'formBillType']) !!}
+                            @include('bills.partials._form-billtype')
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /#page-wrapper -->
 @endsection
 
 @section('inline_scripts')
@@ -165,7 +164,7 @@
         $.ajax({
             headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             method: 'POST',
-            url: '{{ route('bill_addBillType', Auth::user()->republic->id) }}',
+            url: '{{ route('bill_addBillType', (Auth::user()->republic != null) ? Auth::user()->republic->id : Auth::user()->republics->first()->id) }}',
             data: {
                 data: data,
             }
@@ -199,16 +198,16 @@
     });
 
     $('#formEditBill').submit(function(e) {
-        debugger
         e.preventDefault();
         var bill = $('.modal-body').data('bill');
         var rep_id = $('.modal-body').data('rep-id');
         var datas = $(this).serializeArray();
+        console.log(datas);
 
         $.ajax({
             headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             method: 'PUT',
-            url: '/admin/republicas/'+ rep_id +'/contas/'+ bill +'/atualizar',
+            url: '/admin/republicas/'+ rep_id +'/contas/'+ bill +'/atualizar-conta',
             data: {
                 data: datas,
             }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt_br">
 
 <head>
 
@@ -24,6 +24,13 @@
     <link href="/../../../bower_components/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Toastr CDN -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <!-- Select2 CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <!-- HighSlide -->
+    <link href="/../../../highslide/highslide.css" rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="/../../../bower_components/jquery/dist/jquery.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -212,9 +219,39 @@
 
 </div>
 
-@include('layouts.partials._footer')
+<!-- Bootstrap Core JavaScript -->
+<script src="/../../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/../../../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/../../../bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js"></script>
 
-@yield('inline_scripts')
+<script src="/../../../bower_components/sweetalert/dist/sweetalert.min.js"></script>
+<!-- Jansy Bootstrap CDN -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+<!-- Mask Money CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
+<!-- Masks for Form Inputs -->
+<script src="/../../../jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+<!-- DataTables-->
+<script src="/../../../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<!-- SlimScroll -->
+<script src="/../../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- Toastr CDN-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!-- Select2 CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+@section('inline_scripts')
+@show
+
+<script type="text/javascript">
+    $('.maskMoney').maskMoney({
+        thousands: '',
+        decimal: '.',
+        allowZero: true,
+    });
+</script>
 
 </body>
 </html>

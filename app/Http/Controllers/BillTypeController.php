@@ -38,16 +38,11 @@ class BillTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function tipos()
+    public function index($repId)
     {
-        $rep_id =  \Auth::user()->republic->id;
-        if(isset($rep_id)){
-            $rep_id = \Auth::user()->republics->first()->id;
-        }
+        $billtypes = BillType::where('republic_id', '=', $repId)->get();
 
-        $billtypes = BillType::where('republic_id', '=', $rep_id)->get();
-
-        return view('bills.types')->with('billtypes', $billtypes);
+        return view('billtypes.index', compact('billtypes'));
     }
 
     /**
@@ -61,38 +56,16 @@ class BillTypeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($repId, $billTypeId)
     {
-        $type = BillType::findOrFail($id);
+        $billtype = BillType::findOrFail($billTypeId);
 
-        return view('bills.edit')->with('type',$type);
+        return view('billtypes.edit', compact('billtype'));
     }
 
     /**
@@ -102,13 +75,13 @@ class BillTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $repId, $billtypeId)
     {
-        $type = BillType::findOrFail($id);
-        $type->fill($request->all());
-        $type->update();
+        $billtype = BillType::findOrFail($billtypeId);
+        $billtype->fill($request->all());
+        $billtype->update();
 
-        return redirect()->route('bill_Type',[$type->republic_id]);
+        return redirect()->route('billtype_index', $repId);
     }
 
     /**
@@ -117,12 +90,12 @@ class BillTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($repId, $id)
     {
         $type = BillType::findOrFail($id);
         $type->delete();
 
-        return redirect()->route('bill_Txype',[$type->republic_id]);
+        return redirect()->route('billtype_index', $repId);
 
     }
 }

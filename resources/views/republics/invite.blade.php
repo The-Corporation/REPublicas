@@ -15,7 +15,7 @@
             <div class="col-lg-12 col-xs-12">
                 <h1 class="page-header"> Convidar futuro morador
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 pull-right">
-                        {!! Form::open(['route' => 'rep_search', 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                        {!! Form::open(['route' => 'user_search', 'method' => 'GET', 'class' => 'form-horizontal']) !!}
                         <div class="input-group">
                             {!! Form::text('searchBox', null, ['class' => 'form-control',
                                            'placeholder' => 'Pesquisar usuário...']) !!}

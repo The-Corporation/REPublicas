@@ -39,4 +39,16 @@ class Bill extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Gets by type.
+     *
+     * @param     int  $typeId
+     * @return     Bill::class
+     */
+    public function getByType($typeId)
+    {
+        if($this->billtype->id == intval($typeId))
+            return $this;
+    }
 }
